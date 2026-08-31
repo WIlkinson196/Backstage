@@ -1,64 +1,54 @@
-# Backstage v0.4 — Enquiries + Sales Intelligence
+# Backstage v0.5 — Wedding Workspace Foundation
 
 ## Added
 
-- Premium enquiry sales workspace
-- Kanban-style sales pipeline
-- Live pipeline value
-- Needs-action and hot-opportunity metrics
-- AI lead score
-- AI qualification summary
-- AI suggested response
-- Next-best-action card
-- Customer/contact panel
-- Sales activity action centre
-- Activity timeline
-- Viewing/proposal/provisional states
-- Pipeline health treatment
-- Buying-signal / revenue-risk intelligence panel
-- Dedicated enquiry detail route
-- Migration `007_sales_intelligence.sql`
-- Migration notes documenting useful workflows retained from the existing CRM
-
-## Existing CRM reference
-
-The previous CRM was reviewed specifically for:
-- enquiry activity outcomes
-- follow-up logic
-- viewing workflow
-- quote/proposal workflow
-- provisional booking workflow
-- lost enquiries
-- pipeline health
-- Sales OS qualification
-- revenue at risk
-- sales sequences
-
-The old implementation was not copied.
+- Premium Weddings landing page
+- Individual wedding workspace
+- Full existing-CRM tab architecture:
+  - Overview
+  - Quote
+  - Pricing
+  - Planning
+  - Tasks
+  - Payments
+  - Timeline
+  - Documents
+  - Running Order
+  - Seating
+  - Floor Plan
+  - Function Sheet
+  - Live
+- First / Halfway / Final guided meeting cards
+- Wedding readiness score
+- Planning score
+- AI planning checks
+- Task/milestone engine UI
+- Payment position and payment schedule
+- Event timeline
+- Shared planning snapshot
+- Dedicated module folders/routes
+- Migration `008_wedding_workspace.sql`
+- Wedding migration notes documenting old CRM functionality retained
 
 ## Important
 
-There is still no login.
+This is the foundation release for Weddings, not the completed wedding module.
 
-The v0.4 UI currently uses demo enquiry data because we are not enabling anonymous public writes.
+The key change is architectural: every wedding function now has its own route and database boundary, but they share the same wedding record and planning model.
 
-The next technical step for real interactive saves is a secure development write gateway or the auth/membership layer when we are ready for it.
+The next wedding releases can therefore deepen Quote, Pricing, Planning, Documents, Seating, Function Sheet and Live independently without creating another giant wedding JS file.
 
-## Next release recommendation
+## Database migration order
 
-v0.5 — Wedding Workspace Foundation:
-- wedding overview
-- quote / pricing
-- planning
-- meeting milestones
-- tasks
-- payments
-- timeline
-- documents
-- running order
-- seating
-- function sheet
-- live event view
-- AI planning checks
+Run after the existing migrations:
+`008_wedding_workspace.sql`
 
-This should use the existing CRM wedding module as a detailed feature checklist, but rebuild the experience completely in Backstage.
+## Still intentionally absent
+
+- login
+- anonymous writes
+- customer portal access
+- Stripe live payments
+- OpenAI live calls
+
+Those integrations remain architecturally prepared but are not being exposed before the core product is stable.
