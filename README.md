@@ -1,56 +1,64 @@
-# Backstage v0.3 — Premium Foundation + Supabase Reads
+# Backstage v0.4 — Enquiries + Sales Intelligence
 
-## What changed
+## Added
 
-- Dashboard redesigned much closer to the premium Backstage concept.
-- Photography-led hero treatment introduced.
-- My Venue hero redesigned.
-- Mobile navigation added as the first step toward the mobile product language.
-- Fresh Supabase repository added for My Venue reads.
-- Safe demo fallback remains if Supabase is not configured.
-- No public database writes while there is no login.
-- Development-only RLS read migration added.
-- Platform architecture document now explicitly covers:
-  - Venue Team Web App
-  - Customer Portal
-  - Staff Mobile App
-  - Marketing Website
-  - shared AI / automation / Supabase foundation
+- Premium enquiry sales workspace
+- Kanban-style sales pipeline
+- Live pipeline value
+- Needs-action and hot-opportunity metrics
+- AI lead score
+- AI qualification summary
+- AI suggested response
+- Next-best-action card
+- Customer/contact panel
+- Sales activity action centre
+- Activity timeline
+- Viewing/proposal/provisional states
+- Pipeline health treatment
+- Buying-signal / revenue-risk intelligence panel
+- Dedicated enquiry detail route
+- Migration `007_sales_intelligence.sql`
+- Migration notes documenting useful workflows retained from the existing CRM
 
-## Supabase migration order
+## Existing CRM reference
 
-Run:
-1. 001_foundation.sql
-2. 002_catalogue.sql
-3. 003_enquiries.sql
-4. 004_automation.sql
-5. 005_my_venue_configuration.sql
-6. 006_development_read_access.sql
+The previous CRM was reviewed specifically for:
+- enquiry activity outcomes
+- follow-up logic
+- viewing workflow
+- quote/proposal workflow
+- provisional booking workflow
+- lost enquiries
+- pipeline health
+- Sales OS qualification
+- revenue at risk
+- sales sequences
 
-Then seed:
-1. 001_demo_venue.sql
-2. 002_my_venue_demo_data.sql
-
-## Vercel environment variables
-
-For fresh Supabase read connection:
-- NEXT_PUBLIC_SUPABASE_URL
-- NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-Do not add a service-role key to browser code.
+The old implementation was not copied.
 
 ## Important
-The app intentionally still has no login.
-The v0.3 Supabase connection is read-only for the seeded demo venue.
-Persistent editing comes after we introduce a secure write mechanism; we will not expose anonymous public writes.
 
-## Next release
-Backstage v0.4:
-- Enquiries + Sales Intelligence
-- enquiry detail workspace
-- activity timeline
-- pipeline
-- AI qualification UI
-- follow-up engine
-- viewing/proposal workflow
-- improved photography and premium states
+There is still no login.
+
+The v0.4 UI currently uses demo enquiry data because we are not enabling anonymous public writes.
+
+The next technical step for real interactive saves is a secure development write gateway or the auth/membership layer when we are ready for it.
+
+## Next release recommendation
+
+v0.5 — Wedding Workspace Foundation:
+- wedding overview
+- quote / pricing
+- planning
+- meeting milestones
+- tasks
+- payments
+- timeline
+- documents
+- running order
+- seating
+- function sheet
+- live event view
+- AI planning checks
+
+This should use the existing CRM wedding module as a detailed feature checklist, but rebuild the experience completely in Backstage.
