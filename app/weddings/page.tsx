@@ -1,0 +1,1 @@
+import {AppShell} from "@/components/navigation/app-shell";export default function Page(){return <AppShell><div className="mx-auto max-w-[1500px]"><div className="backstage-kicker">Backstage module</div><h1 className="backstage-display mt-2 text-5xl">Weddings</h1><p className="mt-3 text-sm text-black/45">Reserved as a separate vertical slice.</p></div></AppShell>}

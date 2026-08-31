@@ -1,0 +1,4 @@
+create extension if not exists pgcrypto;
+create table if not exists organisations(id uuid primary key default gen_random_uuid(),name text not null,created_at timestamptz not null default now());
+create table if not exists venues(id uuid primary key default gen_random_uuid(),organisation_id uuid not null references organisations(id) on delete cascade,name text not null,trading_name text,description text,phone text,email text,website text,logo_url text,hero_image_url text,timezone text not null default 'Europe/London',currency text not null default 'GBP',created_at timestamptz not null default now(),updated_at timestamptz not null default now());
+create table if not exists venue_spaces(id uuid primary key default gen_random_uuid(),venue_id uuid not null references venues(id) on delete cascade,name text not null,description text,capacity_seated integer,capacity_standing integer,is_active boolean not null default true,created_at timestamptz not null default now());
