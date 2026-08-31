@@ -1,36 +1,29 @@
+import { demoPolicies, demoProducts, demoSpaces, demoVenueProfile } from "../data/demo";
+import type { VenuePolicy, VenueProduct, VenueProfileForm, VenueSpace } from "../types/config";
 import {
-  demoPolicies,
-  demoProducts,
-  demoSpaces,
-  demoVenueProfile
-} from "../data/demo";
-import type {
-  VenuePolicy,
-  VenueProduct,
-  VenueProfileForm,
-  VenueSpace
-} from "../types/config";
+  getSupabaseVenuePolicies,
+  getSupabaseVenueProducts,
+  getSupabaseVenueProfile,
+  getSupabaseVenueSpaces
+} from "./supabase-repository";
 
 /**
- * v0.2 repository boundary.
+ * Read repository.
  *
- * The UI talks to this layer instead of talking to Supabase directly.
- * That means we can switch between demo data and a real Supabase project
- * without rewriting page components.
+ * If Supabase environment variables are present and the schema is accessible,
+ * Backstage reads from the fresh project. Otherwise it safely falls back to demo data.
+ *
+ * Public writes are deliberately NOT enabled while there is no authentication.
  */
-
 export async function getVenueProfile(): Promise<VenueProfileForm> {
-  return demoVenueProfile;
+  return (await getSupabaseVenueProfile()) ?? demoVenueProfile;
 }
-
 export async function getVenueSpaces(): Promise<VenueSpace[]> {
-  return demoSpaces;
+  return (await getSupabaseVenueSpaces()) ?? demoSpaces;
 }
-
 export async function getVenueProducts(): Promise<VenueProduct[]> {
-  return demoProducts;
+  return (await getSupabaseVenueProducts()) ?? demoProducts;
 }
-
 export async function getVenuePolicies(): Promise<VenuePolicy[]> {
-  return demoPolicies;
+  return (await getSupabaseVenuePolicies()) ?? demoPolicies;
 }

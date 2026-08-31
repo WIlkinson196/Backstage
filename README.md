@@ -1,57 +1,56 @@
-# Backstage v0.2 — My Venue
+# Backstage v0.3 — Premium Foundation + Supabase Reads
 
-Backstage is being rebuilt as a fresh, modular venue operating system.
+## What changed
 
-## v0.2 adds
+- Dashboard redesigned much closer to the premium Backstage concept.
+- Photography-led hero treatment introduced.
+- My Venue hero redesigned.
+- Mobile navigation added as the first step toward the mobile product language.
+- Fresh Supabase repository added for My Venue reads.
+- Safe demo fallback remains if Supabase is not configured.
+- No public database writes while there is no login.
+- Development-only RLS read migration added.
+- Platform architecture document now explicitly covers:
+  - Venue Team Web App
+  - Customer Portal
+  - Staff Mobile App
+  - Marketing Website
+  - shared AI / automation / Supabase foundation
 
-- Premium `My Venue` workspace
-- Venue Profile
-- Spaces
-- Wedding packages
-- Meeting packages
-- Private Events
-- Food & Drink
-- Accommodation
-- Décor & Extras
-- Terms & Policies
-- Automation Rules
-- Dedicated My Venue data/types/service folders
-- New Supabase migration `005_my_venue_configuration.sql`
-- New demo seed `002_my_venue_demo_data.sql`
-
-## Important
-
-There is still **no login**.
-
-The v0.2 UI currently reads from the repository abstraction in:
-
-`features/my-venue/services/repository.ts`
-
-That currently returns safe demo data. The next connection step swaps that repository to the fresh Supabase project without rewriting the pages.
-
-This is intentional: UI, domain logic and database access stay separate.
-
-## Fresh Supabase setup order
+## Supabase migration order
 
 Run:
+1. 001_foundation.sql
+2. 002_catalogue.sql
+3. 003_enquiries.sql
+4. 004_automation.sql
+5. 005_my_venue_configuration.sql
+6. 006_development_read_access.sql
 
-1. `001_foundation.sql`
-2. `002_catalogue.sql`
-3. `003_enquiries.sql`
-4. `004_automation.sql`
-5. `005_my_venue_configuration.sql`
+Then seed:
+1. 001_demo_venue.sql
+2. 002_my_venue_demo_data.sql
 
-Then optional demo data:
+## Vercel environment variables
 
-1. `001_demo_venue.sql`
-2. `002_my_venue_demo_data.sql`
+For fresh Supabase read connection:
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-## Vercel
+Do not add a service-role key to browser code.
 
-The app can deploy without Supabase credentials at this stage because My Venue uses the demo repository.
+## Important
+The app intentionally still has no login.
+The v0.3 Supabase connection is read-only for the seeded demo venue.
+Persistent editing comes after we introduce a secure write mechanism; we will not expose anonymous public writes.
 
-This lets us perfect the application first without exposing public unauthenticated database writes.
-
-## Next build
-
-v0.3 should connect the repository to the fresh Supabase project and make My Venue editing persistent, followed by the full Enquiries/Sales workflow.
+## Next release
+Backstage v0.4:
+- Enquiries + Sales Intelligence
+- enquiry detail workspace
+- activity timeline
+- pipeline
+- AI qualification UI
+- follow-up engine
+- viewing/proposal workflow
+- improved photography and premium states
