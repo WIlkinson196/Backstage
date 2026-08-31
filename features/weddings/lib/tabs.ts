@@ -11,5 +11,6 @@ export const weddingTabs = [
   ["seating", "Seating"],
   ["floor-plan", "Floor Plan"],
   ["function-sheet", "Function Sheet"],
-  ["live", "Live"]
+  ["live", "Live"],
+  ["post-event", "Post Event"]
 ] as const;
