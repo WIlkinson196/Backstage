@@ -1,36 +1,57 @@
-# Backstage v0.7 — Documents + Function Sheet + Running Order
+# Backstage v0.8 — Guest Management + Seating + Floor Plan
 
 ## Added
 
-- Wedding Document Centre
-- document version/status treatment
-- stale-document architecture
-- Operational Running Order
-- owners, locations and operational notes
-- Function Sheet preview
-- Finalisation / readiness gate
-- blocking vs warning checks
-- source-version tracking
-- migration `010_wedding_documents_operations.sql`
+- guest management data model
+- guest list UI
+- RSVP status
+- day/evening/both attendance
+- adult/child/baby grouping
+- menu choices
+- dietary requirements
+- dietary severity
+- accessibility field
+- guest data source tracking
+- Dietary Matrix
+- guest readiness metrics
+- table entities
+- seating workspace
+- unassigned guest list
+- floor-plan data model
+- floor-plan canvas foundation
+- operational zones
+- customer portal guest-management settings
+- guest change log
+- migration `011_wedding_guests_seating_floorplan.sql`
 
 ## Product rule
 
-The function sheet is not a separate set of manually maintained data.
+A guest is entered once.
 
-Backstage generates it from the structured wedding record. If the wedding plan changes after issue, Backstage can detect that the document is stale and requires re-issue.
+The same guest record will eventually feed:
+- couple portal
+- seating
+- dietary matrix
+- kitchen sheet
+- function sheet
+- running order
+- live wedding mode
 
-## Run after v0.6
+## Run after v0.7
 
-`010_wedding_documents_operations.sql`
+`011_wedding_guests_seating_floorplan.sql`
 
 ## Next
 
-v0.8 should deepen:
-- Seating & Guest Management
-- dietary matrix
-- menu choices
-- table allocation
-- floor-plan data model
-- customer portal guest-information handoff
+v0.9 should build:
+- Customer / Couple Portal foundation
+- branded wedding homepage
+- planning progress
+- tasks for the couple
+- guest management handoff
+- document access
+- payment visibility
+- message / question area
+- portal-specific permissions
 
-That gives the Function Sheet and Kitchen outputs much stronger operational data.
+This is where Backstage begins to show the customer-facing side of the platform.

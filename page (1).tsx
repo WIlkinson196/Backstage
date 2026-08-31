@@ -1,14 +1,8 @@
-import { getFunctionSheet, getWeddingReadiness } from "@/features/weddings/services/operations-repository";
-import { FunctionSheetPreview } from "@/features/weddings/components/function-sheet-preview";
-import { ReadinessGate } from "@/features/weddings/components/readiness-gate";
+import { getWeddingDietarySummary, getWeddingGuests } from "@/features/weddings/services/guest-repository";
+import { DietaryMatrix } from "@/features/weddings/components/dietary-matrix";
 
-export default async function FunctionSheetPage({ params }: { params: Promise<{ id:string }> }) {
+export default async function DietariesPage({ params }: { params: Promise<{ id:string }> }) {
   const { id } = await params;
-  const [sections, checks] = await Promise.all([getFunctionSheet(id), getWeddingReadiness(id)]);
-  return (
-    <div className="space-y-6">
-      <FunctionSheetPreview sections={sections}/>
-      <ReadinessGate checks={checks}/>
-    </div>
-  );
+  const [guests, summary] = await Promise.all([getWeddingGuests(id), getWeddingDietarySummary(id)]);
+  return <DietaryMatrix guests={guests} summary={summary}/>;
 }
