@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { WeddingGuest, WeddingTable } from "../types/guests";
+import type { WeddingGuest, WeddingTable } from "@/features/weddings/types/guests";
 import { Users, Circle, Plus, UserRoundPlus, UtensilsCrossed } from "lucide-react";
 
 export function SeatingBoard({ tables, guests, weddingId }: { tables: WeddingTable[]; guests: WeddingGuest[]; weddingId?: string }) {

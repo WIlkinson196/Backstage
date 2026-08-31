@@ -1,4 +1,4 @@
-import type { DietarySummary, FloorPlanZone, WeddingGuest, WeddingTable } from "../types/guests";
+import type { DietarySummary, FloorPlanZone, WeddingGuest, WeddingTable } from "@/features/weddings/types/guests";
 
 export const guestsByWedding: Record<string, WeddingGuest[]> = {
   "wed-002": [

@@ -1,4 +1,4 @@
-import type { GuestReadiness } from "../types/guests";
+import type { GuestReadiness } from "@/features/weddings/types/guests";
 import { Users, Armchair, ClipboardList, TriangleAlert, Utensils } from "lucide-react";
 
 export function GuestReadinessCards({ readiness }: { readiness: GuestReadiness }) {

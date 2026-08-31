@@ -1,5 +1,5 @@
 import { dietarySummaryByWedding, guestsByWedding, tablesByWedding, zonesByWedding } from "../data/guests-demo";
-import type { GuestReadiness } from "../types/guests";
+import type { GuestReadiness } from "@/features/weddings/types/guests";
 
 export async function getWeddingGuests(id: string) {
   return guestsByWedding[id] ?? [];
