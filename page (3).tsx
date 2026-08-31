@@ -1,21 +1,9 @@
-import { getGuestReadiness, getWeddingGuests, getWeddingTables } from "@/features/weddings/services/guest-repository";
-import { GuestReadinessCards } from "@/features/weddings/components/guest-readiness-cards";
-import { SeatingBoard } from "@/features/weddings/components/seating-board";
-import { PortalHandoffCard } from "@/features/weddings/components/portal-handoff-card";
+import { getPortalTasks, getPortalWedding } from "@/features/portal/services/repository";
+import { PortalHero } from "@/features/portal/components/portal-hero";
+import { PortalTasks } from "@/features/portal/components/portal-tasks";
+import { PortalQuickCards } from "@/features/portal/components/portal-quick-cards";
 
-export default async function SeatingPage({ params }: { params: Promise<{ id:string }> }) {
-  const { id } = await params;
-  const [guests, tables, readiness] = await Promise.all([
-    getWeddingGuests(id),
-    getWeddingTables(id),
-    getGuestReadiness(id)
-  ]);
-
-  return (
-    <div className="space-y-6">
-      <GuestReadinessCards readiness={readiness}/>
-      <SeatingBoard tables={tables} guests={guests} weddingId={id}/>
-      <PortalHandoffCard/>
-    </div>
-  );
+export default async function PortalHome() {
+  const [wedding,tasks]=await Promise.all([getPortalWedding(),getPortalTasks()]);
+  return <div className="mx-auto max-w-[1280px] space-y-6 px-5 py-6 pb-24"><PortalHero wedding={wedding}/><div className="grid gap-6 xl:grid-cols-[1fr_.9fr]"><PortalTasks tasks={tasks}/><PortalQuickCards balance={wedding.outstandingBalance}/></div></div>
 }

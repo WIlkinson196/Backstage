@@ -1,0 +1,22 @@
+# Backstage v0.9 — Changed Files
+
+- `README.md`
+- `app/portal/documents/page.tsx`
+- `app/portal/guests/page.tsx`
+- `app/portal/layout.tsx`
+- `app/portal/messages/page.tsx`
+- `app/portal/page.tsx`
+- `app/portal/payments/page.tsx`
+- `docs/PORTAL_V09_NOTES.md`
+- `features/portal/components/portal-documents.tsx`
+- `features/portal/components/portal-hero.tsx`
+- `features/portal/components/portal-messages.tsx`
+- `features/portal/components/portal-payments.tsx`
+- `features/portal/components/portal-quick-cards.tsx`
+- `features/portal/components/portal-shell.tsx`
+- `features/portal/components/portal-tasks.tsx`
+- `features/portal/data/demo.ts`
+- `features/portal/services/repository.ts`
+- `features/portal/types/portal.ts`
+- `package.json`
+- `supabase/migrations/012_customer_portal_foundation.sql`
