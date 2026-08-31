@@ -1,0 +1,6 @@
+import type { PortalMessage } from "@/features/portal/types/portal";
+import { Send } from "lucide-react";
+
+export function PortalMessages({messages}:{messages:PortalMessage[]}) {
+  return <section className="mx-auto max-w-4xl rounded-3xl border border-[#E8E0D6] bg-[#FFFCF8] p-5 md:p-7"><div><div className="text-[10px] font-bold uppercase tracking-[.14em] text-[#A37E4B]">Venue conversation</div><h2 className="mt-2 font-serif text-3xl">Messages</h2></div><div className="mt-7 space-y-4">{messages.map(m=><div key={m.id} className={`flex ${m.sender==="couple"?"justify-end":"justify-start"}`}><div className={`max-w-[80%] rounded-3xl p-4 ${m.sender==="couple"?"bg-[#101822] text-white":"bg-[#F1EBE2]"}`}><div className={`text-[10px] font-bold uppercase tracking-[.1em] ${m.sender==="couple"?"text-white/40":"text-black/35"}`}>{m.senderName} · {m.sentAt}</div><p className={`mt-2 text-sm leading-6 ${m.sender==="couple"?"text-white/80":"text-black/60"}`}>{m.body}</p></div></div>)}</div><div className="mt-7 flex gap-2 rounded-2xl border border-[#E8E0D6] bg-white p-2"><input className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none" placeholder="Ask your venue team a question..."/><button className="grid h-10 w-10 place-items-center rounded-xl bg-[#101822] text-white"><Send size={15}/></button></div></section>
+}

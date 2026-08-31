@@ -1,0 +1,3 @@
+import { getPortalDocuments } from "@/features/portal/services/repository";
+import { PortalDocuments } from "@/features/portal/components/portal-documents";
+export default async function Page(){const docs=await getPortalDocuments();return <div className="mx-auto max-w-[1280px] px-5 py-10 pb-24"><div className="mb-7"><div className="text-[10px] font-bold uppercase tracking-[.14em] text-[#A37E4B]">Your wedding</div><h1 className="mt-2 font-serif text-4xl">Documents</h1><p className="mt-2 text-sm text-black/45">The latest documents shared by your venue team.</p></div><PortalDocuments documents={docs}/></div>}

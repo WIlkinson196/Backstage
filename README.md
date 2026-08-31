@@ -1,23 +1,34 @@
-# Backstage v0.1
+# Backstage v0.9 — Customer / Couple Portal Foundation
 
-Fresh modular foundation for Backstage — the venue operating system.
+## Added
+- separate `/portal` customer experience
+- premium wedding hero and countdown
+- planning progress
+- couple task list
+- guest-management handoff
+- documents
+- payment schedule
+- venue/couple messages
+- mobile portal navigation
+- portal membership schema
+- portal permissions foundation
+- customer-visible document controls
+- portal activity/audit foundation
+- migration `012_customer_portal_foundation.sql`
 
-## Rules
-- No login UI yet.
-- No old CRM CSS/JS copied into the app.
-- Every major feature lives in its own folder.
-- Supabase = data. Vercel = deployment. OpenAI + Stripe = server-side integrations.
-- My Venue = configuration brain.
-- AI and automation are first-class features.
+## Important
+The portal deliberately shares the same wedding, guest, document and payment data model as the venue workspace.
 
-## First release
-Dashboard + My Venue + Enquiries + database foundation.
+It is not a second CRM.
 
-## Run
-```bash
-npm install
-npm run dev
-```
+## Run after v0.8
+`012_customer_portal_foundation.sql`
 
-## Supabase
-Run `/supabase/migrations` in numeric order, then optional `/supabase/seed`. No auth is included yet.
+## Next
+v0.10 should begin the wider event engine:
+- Functions
+- Meetings & Conferences
+- Private Events
+- shared Event core
+- event-specific operational requirements
+- reusable Function Sheet / Running Order architecture
