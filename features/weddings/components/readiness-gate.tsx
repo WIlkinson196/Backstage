@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { ReadinessCheck } from "@/features/weddings/types/operations";
-=======
-import type { ReadinessCheck } from "../types/operations";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { CheckCircle2, TriangleAlert, OctagonAlert, Sparkles } from "lucide-react";
 
 export function ReadinessGate({ checks }: { checks: ReadinessCheck[] }) {

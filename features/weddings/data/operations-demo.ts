@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { FunctionSheetSection, ReadinessCheck, RunningOrderItem, WeddingDocument } from "@/features/weddings/types/operations";
-=======
-import type { FunctionSheetSection, ReadinessCheck, RunningOrderItem, WeddingDocument } from "../types/operations";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 
 export const documentsByWedding: Record<string, WeddingDocument[]> = {
   "wed-002": [

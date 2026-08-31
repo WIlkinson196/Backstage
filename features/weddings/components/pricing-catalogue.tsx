@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { PricingCatalogueItem } from "@/features/weddings/types/commercial";
-=======
-import type { PricingCatalogueItem } from "../types/commercial";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { Search, Plus, Building2 } from "lucide-react";
 
 function priceLabel(item: PricingCatalogueItem) {

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { FloorPlanZone, WeddingTable } from "@/features/weddings/types/guests";
-=======
-import type { FloorPlanZone, WeddingTable } from "../types/guests";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { Move, Plus, Sparkles } from "lucide-react";
 
 export function FloorPlanCanvas({ tables, zones }: { tables: WeddingTable[]; zones: FloorPlanZone[] }) {

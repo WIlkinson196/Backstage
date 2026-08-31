@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { PortalDocument } from "@/features/portal/types/portal";
-=======
-import type { PortalDocument } from "../types/portal";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { FileText, Download, Clock3 } from "lucide-react";
 
 export function PortalDocuments({documents}:{documents:PortalDocument[]}) {

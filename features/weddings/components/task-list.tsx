@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { WeddingTask } from "@/features/weddings/types/wedding";
-=======
-import type { WeddingTask } from "../types/wedding";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { CheckCircle2, Circle } from "lucide-react";
 
 export function WeddingTaskList({ tasks }: { tasks: WeddingTask[] }) {

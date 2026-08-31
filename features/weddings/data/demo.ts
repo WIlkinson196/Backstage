@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { WeddingMeeting, WeddingPayment, WeddingRecord, WeddingTask, WeddingTimelineItem } from "@/features/weddings/types/wedding";
-=======
-import type { WeddingMeeting, WeddingPayment, WeddingRecord, WeddingTask, WeddingTimelineItem } from "../types/wedding";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 
 export const demoWeddings: WeddingRecord[] = [
   {

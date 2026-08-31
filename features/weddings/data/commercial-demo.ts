@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { PlanningSection, PricingCatalogueItem, WeddingQuote } from "@/features/weddings/types/commercial";
-=======
-import type { PlanningSection, PricingCatalogueItem, WeddingQuote } from "../types/commercial";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 
 export const weddingCatalogue: PricingCatalogueItem[] = [
   {

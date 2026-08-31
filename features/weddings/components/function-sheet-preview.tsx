@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { FunctionSheetSection } from "@/features/weddings/types/operations";
-=======
-import type { FunctionSheetSection } from "../types/operations";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { TriangleAlert, CheckCircle2, Printer, FileDown } from "lucide-react";
 
 export function FunctionSheetPreview({ sections }: { sections: FunctionSheetSection[] }) {

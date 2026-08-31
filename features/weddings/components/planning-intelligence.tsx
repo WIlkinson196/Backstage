@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { PlanningSection } from "@/features/weddings/types/commercial";
-=======
-import type { PlanningSection } from "../types/commercial";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { Sparkles, TriangleAlert, CheckCircle2, ArrowRight } from "lucide-react";
 
 export function PlanningIntelligence({ sections }: { sections: PlanningSection[] }) {

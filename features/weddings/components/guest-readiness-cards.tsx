@@ -1,20 +1,11 @@
-<<<<<<< HEAD
 import type { GuestReadiness } from "@/features/weddings/types/guests";
 import { Users, Armchair, ClipboardList, TriangleAlert, Utensils } from "lucide-react";
-=======
-import type { GuestReadiness } from "../types/guests";
-import { Users, Armchair, ClipboardClock, TriangleAlert, Utensils } from "lucide-react";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 
 export function GuestReadinessCards({ readiness }: { readiness: GuestReadiness }) {
   const cards = [
     ["Guests", readiness.totalGuests, Users],
     ["Unassigned", readiness.unassignedGuests, Armchair],
-<<<<<<< HEAD
     ["Pending RSVPs", readiness.pendingRsvps, ClipboardList],
-=======
-    ["Pending RSVPs", readiness.pendingRsvps, ClipboardClock],
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
     ["Dietary guests", readiness.dietaryGuests, Utensils],
     ["Critical", readiness.criticalDietaries, TriangleAlert]
   ] as const;

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { DietarySummary, FloorPlanZone, WeddingGuest, WeddingTable } from "@/features/weddings/types/guests";
-=======
-import type { DietarySummary, FloorPlanZone, WeddingGuest, WeddingTable } from "../types/guests";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 
 export const guestsByWedding: Record<string, WeddingGuest[]> = {
   "wed-002": [

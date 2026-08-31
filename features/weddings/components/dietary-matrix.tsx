@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { DietarySummary, WeddingGuest } from "@/features/weddings/types/guests";
-=======
-import type { DietarySummary, WeddingGuest } from "../types/guests";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { ShieldAlert, Sparkles, TriangleAlert } from "lucide-react";
 
 export function DietaryMatrix({ guests, summary }: { guests: WeddingGuest[]; summary: DietarySummary[] }) {

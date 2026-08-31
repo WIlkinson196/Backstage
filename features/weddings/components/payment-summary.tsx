@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import type { WeddingPayment, WeddingRecord } from "@/features/weddings/types/wedding";
-=======
-import type { WeddingPayment, WeddingRecord } from "../types/wedding";
->>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { CheckCircle2, Clock3 } from "lucide-react";
 
 export function PaymentSummary({ wedding, payments }: { wedding: WeddingRecord; payments: WeddingPayment[] }) {
