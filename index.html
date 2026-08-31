@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VenueOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="toast" class="toast hidden"></div>
+
+  <section id="login-screen" class="auth-screen">
+    <div class="auth-image">
+      <img src="./assets/venueos-mark.svg" class="hero-mark" alt="VenueOS">
+      <div>
+        <span class="eyebrow light">Built for modern venues</span>
+        <h1>One system.<br>Every event.<br>Every detail.</h1>
+        <p>Sales, planning, operations, payments, documents and customer experience in one venue operating system.</p>
+      </div>
+      <small>Secure multi-venue platform · MFA enabled · Venue-level access control</small>
+    </div>
+    <div class="auth-panel">
+      <div class="auth-box">
+        <img src="./assets/venueos-logo-dark.svg" class="brand-logo" alt="VenueOS">
+        <span class="eyebrow">Welcome back</span>
+        <h2>Sign in to VenueOS</h2>
+        <p class="muted">Use the work account you were invited with.</p>
+
+        <label>Email address</label>
+        <input id="login-email" type="email" value="amber@thegranary.co.uk">
+        <label>Password</label>
+        <input id="login-password" type="password" value="demo-password">
+        <button class="btn primary full" id="login-btn">Continue securely</button>
+
+        <div class="divider">or</div>
+        <button class="btn outline full" id="invite-setup-btn">I've just been invited — set up my venue</button>
+
+        <div class="security-card">
+          <i data-lucide="shield-check"></i>
+          <span>Each user only sees venues explicitly assigned to them. Multi-site visibility is granted venue-by-venue.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mfa-screen" class="mfa-screen hidden">
+    <div class="card mfa-card">
+      <img src="./assets/venueos-logo-dark.svg" class="brand-logo" alt="VenueOS">
+      <span class="eyebrow">Two-step verification</span>
+      <h2>Verify your mobile number</h2>
+      <p class="muted">We'll send a 6-digit security code by text message.</p>
+      <label>Mobile number</label>
+      <input id="mfa-phone" type="tel" value="+44 7700 900123" placeholder="+44...">
+      <button class="btn primary full" id="send-code-btn">Send text code</button>
+
+      <div id="code-area" class="hidden">
+        <label>Security code</label>
+        <div class="otp">
+          <input maxlength="1"><input maxlength="1"><input maxlength="1"><input maxlength="1"><input maxlength="1"><input maxlength="1">
+        </div>
+        <button class="btn dark full" id="verify-code-btn">Verify & open VenueOS</button>
+      </div>
+
+      <button class="link-btn" id="mfa-back-btn">Back to sign in</button>
+    </div>
+  </section>
+
+  <section id="onboarding-screen" class="onboarding hidden">
+    <div class="onboarding-wrap">
+      <div class="onboarding-top">
+        <img src="./assets/venueos-logo-dark.svg" class="brand-logo" alt="VenueOS">
+        <div class="steps"><span class="active"></span><span class="active"></span><span></span><span></span></div>
+      </div>
+
+      <div class="page-title">
+        <span class="eyebrow">Venue onboarding</span>
+        <h1>Make VenueOS yours.</h1>
+        <p>Enter your venue details, branding and organisation setup.</p>
+      </div>
+
+      <div class="onboarding-grid">
+        <div class="card padded">
+          <div class="form-grid">
+            <div><label>Venue name</label><input id="onboard-venue-name" value="The Granary"></div>
+            <div><label>Company / legal name</label><input value="The Granary Events Ltd"></div>
+            <div><label>Venue type</label><select><option>Hotel & Events Venue</option><option>Wedding Venue</option><option>Conference Venue</option></select></div>
+            <div><label>Primary contact</label><input value="Amber Smith"></div>
+            <div><label>Public email</label><input value="events@thegranary.co.uk"></div>
+            <div><label>Telephone</label><input value="01522 000000"></div>
+          </div>
+
+          <label>Organisation setup</label>
+          <select id="organisation-mode">
+            <option>Single venue</option>
+            <option>Multi-venue group</option>
+          </select>
+
+          <div id="org-help" class="notice">
+            Single venue mode keeps this venue isolated. No other venue can see its enquiries, customers, events, files or finance.
+          </div>
+
+          <div class="row-right">
+            <button class="btn outline" id="onboard-cancel">Cancel</button>
+            <button class="btn dark" id="onboard-save">Save venue & continue</button>
+          </div>
+        </div>
+
+        <div class="card portal-preview">
+          <div class="portal-preview-hero">
+            <img src="./assets/venueos-mark.svg" alt="">
+            <div><span class="eyebrow light">Your customer portal</span><h3>Emma & James</h3><p>Your wedding at The Granary</p></div>
+          </div>
+          <div class="padded">
+            <h4>Your brand, not ours.</h4>
+            <p class="muted">Logo, colours, venue photography, customer welcome message and document branding are controlled per venue.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="app-screen" class="app hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand"><img src="./assets/venueos-logo-light.svg" alt="VenueOS"></div>
+
+      <button class="venue-switch" id="venue-switch-btn">
+        <span><small>Current venue</small><strong id="current-venue-label">The Granary</strong></span>
+        <i data-lucide="chevrons-up-down"></i>
+      </button>
+
+      <nav>
+        <button class="nav-item active" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+
+        <div class="nav-group">
+          <button class="nav-parent"><i data-lucide="badge-pound-sterling"></i><span>Sales</span><i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="nav-children">
+            <button class="nav-item" data-view="enquiries">Enquiries</button>
+            <button class="nav-item" data-view="pipeline">Pipeline</button>
+            <button class="nav-item" data-view="enquiries">Viewings</button>
+            <button class="nav-item" data-view="enquiries">Proposals</button>
+            <button class="nav-item" data-view="enquiries">Contacts</button>
+          </div>
+        </div>
+
+        <div class="nav-group">
+          <button class="nav-parent"><i data-lucide="calendar-days"></i><span>Events</span><i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="nav-children">
+            <button class="nav-item" data-view="wedding">Weddings</button>
+            <button class="nav-item" data-view="dashboard">Meetings & Conferences</button>
+            <button class="nav-item" data-view="dashboard">Private Functions</button>
+            <button class="nav-item" data-view="dashboard">Christmas</button>
+          </div>
+        </div>
+
+        <div class="nav-group">
+          <button class="nav-parent"><i data-lucide="clipboard-list"></i><span>Operations</span><i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="nav-children collapsed">
+            <button class="nav-item" data-view="dashboard">Diary</button>
+            <button class="nav-item" data-view="dashboard">Tasks</button>
+            <button class="nav-item" data-view="dashboard">Function Sheets</button>
+            <button class="nav-item" data-view="dashboard">Food & Drink</button>
+            <button class="nav-item" data-view="dashboard">Suppliers</button>
+          </div>
+        </div>
+
+        <div class="nav-group">
+          <button class="nav-parent"><i data-lucide="wallet-cards"></i><span>Finance</span><i data-lucide="chevron-down" class="chev"></i></button>
+          <div class="nav-children collapsed">
+            <button class="nav-item" data-view="finance">Quotes</button>
+            <button class="nav-item" data-view="finance">Invoices</button>
+            <button class="nav-item" data-view="finance">Payments</button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-view="portal"><i data-lucide="monitor-smartphone"></i><span>Customer Portal</span></button>
+        <button class="nav-item" data-view="settings"><i data-lucide="settings"></i><span>Settings</span></button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div id="breadcrumb">Dashboard</div>
+        <div class="global-search"><i data-lucide="search"></i><input placeholder="Search enquiries, bookings, contacts..."></div>
+        <div class="top-actions">
+          <button class="btn dark compact">+ Create</button>
+          <button class="icon-btn"><i data-lucide="bell"></i></button>
+          <button class="icon-btn"><i data-lucide="message-square"></i></button>
+          <button class="profile-btn" data-view="settings"><span class="avatar">AS</span><span><strong>Amber Smith</strong><small>General Manager</small></span><i data-lucide="chevron-down"></i></button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="view-dashboard" class="view">
+          <div class="page-title title-row">
+            <div><h1>Good morning, Amber 👋</h1><p>Here's what's happening at <span id="dashboard-venue-name">The Granary</span> today.</p></div>
+            <button class="btn primary" data-view="enquiries">+ New Enquiry</button>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="card kpi"><span class="kpi-icon sand"><i data-lucide="users"></i></span><div><small>New enquiries</small><strong>12</strong><em>+3 this week</em></div></div>
+            <div class="card kpi"><span class="kpi-icon blush"><i data-lucide="file-check-2"></i></span><div><small>Proposals sent</small><strong>8</strong><em>+2 this week</em></div></div>
+            <div class="card kpi"><span class="kpi-icon sage"><i data-lucide="calendar-check-2"></i></span><div><small>Bookings this month</small><strong>18</strong><em>+6 this month</em></div></div>
+            <div class="card kpi"><span class="kpi-icon lilac"><i data-lucide="badge-pound-sterling"></i></span><div><small>Revenue this month</small><strong>£124,750</strong><em>+12%</em></div></div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="card padded">
+              <div class="card-head"><h3>Event schedule</h3><span>Day · Week · Month</span></div>
+              <div class="schedule">
+                <div class="space-list">
+                  <div>The Granary</div><div>The Garden</div><div>Conference 1</div><div>Restaurant</div><div>Hotel</div>
+                </div>
+                <div class="timeline">
+                  <div><span class="event wedding-event">Emma & James · Wedding</span></div>
+                  <div><span class="event meeting-event">Acme Ltd · Corporate</span></div>
+                  <div><span class="event lunch-event">Strategy Workshop</span></div>
+                  <div><span class="event dinner-event">Dinner Service</span></div>
+                  <div><span class="event hotel-event">Wedding Room Block</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="card padded">
+                <div class="card-head"><h3>My tasks</h3><span>View all</span></div>
+                <div class="task"><input type="checkbox"><div><strong>Send proposal to Sarah Williams</strong><small>Enquiry #1247</small></div><span class="status danger">High</span></div>
+                <div class="task"><input type="checkbox"><div><strong>Finalise menu for Emma & James</strong><small>Wedding · 25 May</small></div><span class="status danger">High</span></div>
+                <div class="task"><input type="checkbox"><div><strong>Review Acme contract</strong><small>Meeting · 30 May</small></div><span class="status warning">Medium</span></div>
+              </div>
+              <div class="insight-card"><h3>VenueOS Insights</h3><p>3 enquiries need attention today.</p><p>£18,400 of proposal value is awaiting follow-up.</p><p>Saturday evening has unsold capacity.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-enquiries" class="view hidden">
+          <div class="page-title title-row"><div><span class="eyebrow">Sales</span><h1>Enquiries</h1><p>Every lead, every next action, in one place.</p></div><button class="btn primary">+ New Enquiry</button></div>
+          <div class="card table-card">
+            <div class="table-tools"><input placeholder="Search enquiries..."><button class="btn outline compact">Filters</button></div>
+            <table>
+              <thead><tr><th>Customer</th><th>Event</th><th>Preferred date</th><th>Guests</th><th>Value</th><th>Owner</th><th>Status</th><th>Next action</th></tr></thead>
+              <tbody>
+                <tr data-view="wedding"><td>Sarah Williams</td><td><span class="status danger">Wedding</span></td><td>14 Aug 2027</td><td>90</td><td>£8,500</td><td>Amber</td><td><span class="status warning">Viewing booked</span></td><td>Call tomorrow</td></tr>
+                <tr><td>Mark Taylor</td><td><span class="status info">Meeting</span></td><td>3 Sep 2027</td><td>35</td><td>£1,250</td><td>Sophie</td><td><span class="status info">Proposal sent</span></td><td>Follow up today</td></tr>
+                <tr><td>Lucy Harris</td><td><span class="status danger">Wedding</span></td><td>22 May 2028</td><td>120</td><td>£12,400</td><td>Amber</td><td><span class="status success">Deposit pending</span></td><td>Send payment link</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="view-pipeline" class="view hidden">
+          <div class="page-title title-row"><div><span class="eyebrow">Sales</span><h1>Pipeline</h1><p>Turn every enquiry into a clear next action.</p></div><button class="btn primary">+ New Opportunity</button></div>
+          <div class="kanban">
+            <div class="kanban-col"><header><strong>New enquiry</strong><small>4 · £21.8k</small></header><article><b>James Reed — Christmas Party</b><small>150 guests · 9 Dec</small><footer>£4,900 <span>Today</span></footer></article></div>
+            <div class="kanban-col"><header><strong>Contacted</strong><small>6 · £34.2k</small></header><article><b>Daniel & Lucy — Wedding</b><small>100 guests · Aug 2028</small><footer>£9,800 <span>Sophie</span></footer></article></div>
+            <div class="kanban-col"><header><strong>Viewing booked</strong><small>3 · £25.1k</small></header><article data-view="wedding"><b>Sarah Williams — Wedding</b><small>90 guests · 14 Aug</small><footer>£8,500 <span>Tomorrow</span></footer></article></div>
+            <div class="kanban-col"><header><strong>Proposal sent</strong><small>5 · £42.6k</small></header><article><b>Acme Ltd — Leadership Day</b><small>35 guests · 3 Sep</small><footer>£1,250 <span>2 days ago</span></footer></article></div>
+            <div class="kanban-col"><header><strong>Deposit paid</strong><small>7 · £58.4k</small></header><article data-view="wedding"><b>Emma & James — Wedding</b><small>120 guests · 25 May</small><footer>£12,850 <span>Confirmed</span></footer></article></div>
+          </div>
+        </section>
+
+        <section id="view-wedding" class="view hidden">
+          <div class="page-title title-row"><div><span class="eyebrow">Events / Weddings</span><h1>Wedding Workspace</h1><p>Every detail of every wedding, beautifully organised.</p></div><div class="button-row"><button class="btn outline" data-view="portal">Open customer portal</button><button class="btn primary" data-view="finance">Create invoice</button></div></div>
+
+          <div class="wedding-hero">
+            <span class="status success">Confirmed</span>
+            <h2>Emma & James</h2>
+            <p>25 May 2027 · The Granary · 120 guests</p>
+          </div>
+
+          <div class="tabs">
+            <button class="active">Overview</button><button>Planning</button><button>Guests</button><button>Food & Drink</button><button>Accommodation</button><button>Suppliers</button><button>Documents</button><button>Finance</button><button>Tasks</button><button>Notes</button>
+          </div>
+
+          <div class="wedding-grid">
+            <div class="card padded">
+              <div class="card-head"><h3>Planning stages</h3><span>79% complete</span></div>
+              <div class="stage done"><span></span><div><strong>Enquiry & viewing</strong><small>Completed</small></div><em>Complete</em></div>
+              <div class="stage done"><span></span><div><strong>Contract & deposit</strong><small>Signed + deposit paid</small></div><em>Complete</em></div>
+              <div class="stage current"><span></span><div><strong>Planning underway</strong><small>Menus, décor, suppliers, accommodation and guests</small></div><em>In progress</em></div>
+              <div class="stage"><span></span><div><strong>Final meeting</strong><small>Final numbers, timings, dietaries and table plan</small></div><em>Upcoming</em></div>
+              <div class="stage"><span></span><div><strong>Final payment & function sheet</strong><small>Operational sign-off</small></div><em>Upcoming</em></div>
+              <div class="stage"><span></span><div><strong>Wedding day</strong><small>25 May 2027</small></div><em>Upcoming</em></div>
+            </div>
+
+            <div>
+              <div class="card padded">
+                <div class="card-head"><h3>Finance</h3><span data-view="finance">Open finance</span></div>
+                <div class="finance-grid"><div><small>Total</small><strong>£12,850</strong></div><div><small>Paid</small><strong>£2,250</strong></div><div><small>Outstanding</small><strong>£10,600</strong></div><div><small>Next due</small><strong>£3,000</strong></div></div>
+              </div>
+              <div class="insight-card"><h3>VenueOS Insight</h3><p>3 dietary requirements are missing meal choices.</p><p>Photographer insurance is still outstanding.</p><p>Final guest numbers are due in 6 days.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-portal" class="view hidden">
+          <div class="page-title title-row"><div><span class="eyebrow">Customer experience</span><h1>Customer Portal</h1><p>Venue-branded planning hub for the couple.</p></div><button class="btn primary" id="send-portal-invite">Send portal invite</button></div>
+
+          <div class="card portal-email-box">
+            <div><strong>Invite recipients</strong><p class="muted">Send a secure account setup email to the couple.</p></div>
+            <div class="form-grid">
+              <div><label>Primary email</label><input id="portal-email-1" value="emma@example.com"></div>
+              <div><label>Second email</label><input id="portal-email-2" value="james@example.com"></div>
+            </div>
+          </div>
+
+          <div class="portal-shell">
+            <div class="portal-hero">
+              <img src="./assets/venueos-mark.svg" alt="">
+              <div><h2>Emma & James</h2><p>Your wedding at The Granary · 25 May 2027</p></div>
+            </div>
+            <div class="portal-content">
+              <div class="card padded"><div class="card-head"><h3>Your planning progress</h3><span>79%</span></div><div class="progress"><span></span></div><h4>Next up</h4><p>Confirm final menu choices by 14 April.</p></div>
+              <div class="card padded"><div class="card-head"><h3>Payments</h3><span>Stripe</span></div><p>Deposit <b class="float-right">£2,000</b></p><p>Second payment <b class="float-right">£250</b></p><hr><p>Outstanding <b class="float-right">£10,600</b></p><button class="btn primary full">Make a payment</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-finance" class="view hidden">
+          <div class="page-title title-row"><div><span class="eyebrow">Finance</span><h1>Invoices & Payments</h1><p>Branded documents, Stripe payments and signed contracts in one place.</p></div><button class="btn primary">+ New invoice</button></div>
+          <div class="card table-card">
+            <table>
+              <thead><tr><th>Invoice</th><th>Customer</th><th>Event</th><th>Total</th><th>Due</th><th>Status</th><th>Payment</th><th>Contract</th></tr></thead>
+              <tbody>
+                <tr><td>INV-1024</td><td>Emma & James</td><td>Wedding</td><td>£3,000</td><td>14 Apr</td><td><span class="status warning">Due</span></td><td><span class="status success">Stripe</span></td><td><span class="status success">DocuSign signed</span></td></tr>
+                <tr><td>INV-1025</td><td>Acme Ltd</td><td>Conference</td><td>£1,250</td><td>29 Aug</td><td><span class="status info">Sent</span></td><td><span class="status success">Stripe</span></td><td><span class="status info">Awaiting signature</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="notice">Starter build only: Stripe and DocuSign buttons are UI placeholders. Connect them server-side in production.</div>
+        </section>
+
+        <section id="view-settings" class="view hidden">
+          <div class="page-title title-row"><div><span class="eyebrow">Account & branding</span><h1>Settings</h1><p>Profile, venue branding, portal, access and security.</p></div><button class="btn primary">Save changes</button></div>
+
+          <div class="settings-grid">
+            <div class="card settings-nav">
+              <button class="active">My profile</button><button>Venue branding</button><button>Customer portal</button><button>Team & permissions</button><button>Multi-venue access</button><button>Payments</button><button>Integrations</button><button>Security & MFA</button>
+            </div>
+            <div class="card padded">
+              <h3>My profile</h3>
+              <div class="profile-upload"><span class="avatar large">AS</span><button class="btn outline">Upload profile image</button></div>
+              <div class="form-grid"><div><label>Name</label><input value="Amber Smith"></div><div><label>Job title</label><input value="General Manager"></div><div><label>Email</label><input value="amber@thegranary.co.uk"></div><div><label>Mobile for MFA</label><input value="+44 7700 900123"></div></div>
+
+              <h3>Venue branding</h3>
+              <div class="upload-grid">
+                <label class="upload-box"><i data-lucide="image-up"></i><b>Upload venue logo</b><span>Used on portal, proposals, invoices and documents.</span><input type="file" hidden accept="image/*"></label>
+                <label class="upload-box"><i data-lucide="images"></i><b>Upload venue images</b><span>Used across portal and customer experiences.</span><input type="file" hidden multiple accept="image/*"></label>
+              </div>
+
+              <h3>Multi-venue access</h3>
+              <div class="notice"><b>Default isolation:</b> a user at Site A only sees Site A. Site B is invisible unless that exact user is explicitly added to Site B's venue membership.</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </section>
+
+  <div id="venue-modal" class="modal hidden">
+    <div class="card modal-card">
+      <div class="card-head"><h3>Switch venue</h3><button class="icon-btn" id="close-venue-modal"><i data-lucide="x"></i></button></div>
+      <div class="notice">Only venues assigned to your user are shown. Unrelated customers never appear here.</div>
+      <button class="venue-option" data-venue="The Granary"><span class="venue-avatar">G</span><span><strong>The Granary</strong><small>Lincoln · Venue Manager access</small></span><em>Open</em></button>
+      <button class="venue-option" data-venue="Oak House Events"><span class="venue-avatar">O</span><span><strong>Oak House Events</strong><small>Nottingham · Group Manager access</small></span><em>Open</em></button>
+    </div>
+  </div>
+
+  <script src="./config.js"></script>
+  <script src="./supabase.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
