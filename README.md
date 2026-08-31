@@ -1,54 +1,54 @@
-# Backstage v0.5 — Wedding Workspace Foundation
+# Backstage v0.6 — Wedding Planning + Quote + Pricing
 
-## Added
+## This release deepens three core wedding modules
 
-- Premium Weddings landing page
-- Individual wedding workspace
-- Full existing-CRM tab architecture:
-  - Overview
-  - Quote
-  - Pricing
-  - Planning
-  - Tasks
-  - Payments
-  - Timeline
-  - Documents
-  - Running Order
-  - Seating
-  - Floor Plan
-  - Function Sheet
-  - Live
-- First / Halfway / Final guided meeting cards
-- Wedding readiness score
-- Planning score
-- AI planning checks
-- Task/milestone engine UI
-- Payment position and payment schedule
-- Event timeline
-- Shared planning snapshot
-- Dedicated module folders/routes
-- Migration `008_wedding_workspace.sql`
-- Wedding migration notes documenting old CRM functionality retained
+### Quote
+- versioned quote workspace
+- quote lines
+- quantity and unit price
+- subtotal / discount / total
+- preview and issue controls
+- quote intelligence panel
+- snapshot-ready schema
 
-## Important
+### Pricing
+- wedding catalogue sourced from My Venue
+- package, food, entertainment, décor and hire categories
+- price types prepared for fixed / per person / per table / per room / from
+- avoids hard-coding pricing into the wedding UI
 
-This is the foundation release for Weddings, not the completed wedding module.
+### Planning
+- structured planning sections
+- individual planning fields
+- venue / customer / shared ownership
+- customer-visible field flag
+- first / halfway / final meeting journey
+- planning completeness
+- AI gap detection
+- planning change-history schema
 
-The key change is architectural: every wedding function now has its own route and database boundary, but they share the same wedding record and planning model.
+## New migration
 
-The next wedding releases can therefore deepen Quote, Pricing, Planning, Documents, Seating, Function Sheet and Live independently without creating another giant wedding JS file.
+Run after `008_wedding_workspace.sql`:
 
-## Database migration order
+`009_wedding_quote_pricing_planning.sql`
 
-Run after the existing migrations:
-`008_wedding_workspace.sql`
+## Important architecture rule
 
-## Still intentionally absent
+Pricing comes from My Venue.
 
-- login
-- anonymous writes
-- customer portal access
-- Stripe live payments
-- OpenAI live calls
+When a quote is created, Backstage snapshots the commercial values used at that point in time. Updating a future price in My Venue should not rewrite an already-issued quote.
 
-Those integrations remain architecturally prepared but are not being exposed before the core product is stable.
+Planning data is structured once so the same information can later feed:
+- Customer Portal
+- documents
+- running order
+- function sheet
+- kitchen/service outputs
+- live event mode
+
+## Still intentionally demo/read-only
+
+There is still no login and no anonymous write path.
+
+The user interface now models the real workflow, while safe persistence will be connected once the secure write/auth layer is introduced.

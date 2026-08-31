@@ -1,24 +1,18 @@
-export default function Page() {
+import { getWeddingCatalogue } from "@/features/weddings/services/commercial-repository";
+import { PricingCatalogue } from "@/features/weddings/components/pricing-catalogue";
+
+export default async function PricingPage() {
+  const catalogue = await getWeddingCatalogue();
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
-      <section className="backstage-panel rounded-3xl p-7">
-        <div className="backstage-kicker">Price book</div>
-        <h2 className="backstage-display mt-2 text-4xl">Pricing</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-black/45">Year-specific package, menu, drinks, evening food and extras pricing.</p>
-        <div className="mt-7 rounded-3xl border border-dashed border-backstage-line bg-backstage-cream p-8">
-          <div className="text-sm font-semibold">Dedicated Backstage module boundary created.</div>
-          <p className="mt-2 text-sm leading-6 text-black/40">
-            This area is intentionally isolated so we can now build the full workflow without affecting the rest of the wedding workspace.
-          </p>
-        </div>
-      </section>
-      <aside className="rounded-3xl bg-backstage-ink p-6 text-white">
-        <div className="text-[10px] font-bold uppercase tracking-[.14em] text-backstage-gold">Backstage Intelligence</div>
-        <div className="mt-3 backstage-display text-3xl">AI will read the same wedding record.</div>
-        <p className="mt-3 text-sm leading-6 text-white/50">
-          No duplicate data entry: this module will consume the shared planning, pricing, guest and operational data.
+    <div className="space-y-6">
+      <section className="rounded-3xl bg-backstage-ink p-7 text-white">
+        <div className="backstage-kicker !text-backstage-gold">Pricing engine</div>
+        <h2 className="backstage-display mt-3 text-4xl">Venue pricing, without hard-coded wedding maths.</h2>
+        <p className="mt-4 max-w-3xl text-sm leading-6 text-white/55">
+          The wedding workspace consumes the price book from My Venue, so packages, food, décor and extras have one source of truth.
         </p>
-      </aside>
+      </section>
+      <PricingCatalogue items={catalogue}/>
     </div>
   );
 }

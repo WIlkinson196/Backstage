@@ -1,27 +1,29 @@
-import { getWeddingMeetings } from "@/features/weddings/services/repository";
-import { MeetingCards } from "@/features/weddings/components/meeting-cards";
+import { getWeddingPlanning } from "@/features/weddings/services/commercial-repository";
+import { PlanningSectionCard } from "@/features/weddings/components/planning-section-card";
+import { PlanningIntelligence } from "@/features/weddings/components/planning-intelligence";
+import { MeetingWorkflow } from "@/features/weddings/components/meeting-workflow";
 
 export default async function PlanningPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const meetings = await getWeddingMeetings(id);
+  const sections = await getWeddingPlanning(id);
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl bg-backstage-ink p-7 text-white">
-        <div className="backstage-kicker !text-backstage-gold">Guided planning</div>
-        <h2 className="backstage-display mt-3 text-4xl">Ask the right questions at the right time.</h2>
-        <p className="mt-4 max-w-3xl text-sm leading-6 text-white/55">
-          First meeting shapes the day. Halfway converts ideas into selections. Final meeting locks the operational detail.
-        </p>
-      </section>
-      <MeetingCards meetings={meetings}/>
+      <div className="grid gap-6 xl:grid-cols-[1fr_390px]">
+        <section className="backstage-panel rounded-3xl p-7">
+          <div className="backstage-kicker">Wedding planning</div>
+          <h2 className="backstage-display mt-2 text-4xl">One plan. Every downstream document.</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-black/45">
+            Planning data is structured once and reused by the customer portal, quote, running order, function sheet, kitchen outputs and live event view.
+          </p>
+        </section>
+        <PlanningIntelligence sections={sections}/>
+      </div>
+
+      <MeetingWorkflow sections={sections}/>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {["Profile & format","Ceremony","Reception & timings","Food & drinks","Suppliers","Décor","Music & entertainment","Bedrooms","Guest requirements"].map((x) => (
-          <button key={x} className="backstage-panel rounded-2xl p-5 text-left">
-            <div className="backstage-display text-xl">{x}</div>
-            <div className="mt-2 text-sm text-black/40">Open planning section →</div>
-          </button>
-        ))}
+        {sections.map(section => <PlanningSectionCard key={section.key} section={section}/>)}
       </div>
     </div>
   );
