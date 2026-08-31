@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { PortalDocument, PortalMessage, PortalPayment, PortalTask, PortalWedding } from "@/features/portal/types/portal";
+=======
+import type { PortalDocument, PortalMessage, PortalPayment, PortalTask, PortalWedding } from "../types/portal";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 
 export const portalWedding: PortalWedding = {
   id:"wed-002",

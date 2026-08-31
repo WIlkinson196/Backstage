@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { RunningOrderItem } from "@/features/weddings/types/operations";
+=======
+import type { RunningOrderItem } from "../types/operations";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { Clock3, UserRound, MapPin, TriangleAlert } from "lucide-react";
 
 export function RunningOrderBoard({ items }: { items: RunningOrderItem[] }) {

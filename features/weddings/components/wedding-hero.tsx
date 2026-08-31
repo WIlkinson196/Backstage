@@ -1,5 +1,9 @@
 import Link from "next/link";
+<<<<<<< HEAD
 import type { WeddingRecord } from "@/features/weddings/types/wedding";
+=======
+import type { WeddingRecord } from "../types/wedding";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { CalendarDays, Users, PoundSterling, Sparkles, ExternalLink } from "lucide-react";
 import { ReadinessRing } from "./readiness-ring";
 

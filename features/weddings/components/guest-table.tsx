@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { WeddingGuest } from "@/features/weddings/types/guests";
+=======
+import type { WeddingGuest } from "../types/guests";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { Search, UserPlus, TriangleAlert, UtensilsCrossed } from "lucide-react";
 
 export function GuestTable({ guests }: { guests: WeddingGuest[] }) {

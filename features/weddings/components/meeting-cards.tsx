@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { WeddingMeeting } from "@/features/weddings/types/wedding";
+=======
+import type { WeddingMeeting } from "../types/wedding";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export function MeetingCards({ meetings }: { meetings: WeddingMeeting[] }) {

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { PortalMessage } from "@/features/portal/types/portal";
+=======
+import type { PortalMessage } from "../types/portal";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { Send } from "lucide-react";
 
 export function PortalMessages({messages}:{messages:PortalMessage[]}) {

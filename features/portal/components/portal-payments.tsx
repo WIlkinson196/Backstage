@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { PortalPayment } from "@/features/portal/types/portal";
+=======
+import type { PortalPayment } from "../types/portal";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { CheckCircle2, Clock3, CreditCard } from "lucide-react";
 
 export function PortalPayments({payments}:{payments:PortalPayment[]}) {

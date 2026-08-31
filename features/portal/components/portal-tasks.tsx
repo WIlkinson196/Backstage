@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { PortalTask } from "@/features/portal/types/portal";
+=======
+import type { PortalTask } from "../types/portal";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { CheckCircle2, Circle, ArrowRight } from "lucide-react";
 
 export function PortalTasks({tasks}:{tasks:PortalTask[]}) {

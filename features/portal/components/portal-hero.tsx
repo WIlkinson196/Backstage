@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { PortalWedding } from "@/features/portal/types/portal";
+=======
+import type { PortalWedding } from "../types/portal";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { CalendarDays, Sparkles } from "lucide-react";
 
 export function PortalHero({wedding}:{wedding:PortalWedding}) {

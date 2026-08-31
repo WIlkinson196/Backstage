@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { WeddingDocument } from "@/features/weddings/types/operations";
+=======
+import type { WeddingDocument } from "../types/operations";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { FileText, Download, Send, RefreshCw, TriangleAlert, CheckCircle2 } from "lucide-react";
 
 export function DocumentCentre({ documents }: { documents: WeddingDocument[] }) {

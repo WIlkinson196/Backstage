@@ -1,6 +1,10 @@
 {
   "name": "backstage-venue-os",
+<<<<<<< HEAD
   "version": "0.9.4",
+=======
+  "version": "0.9.3",
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { WeddingQuote } from "@/features/weddings/types/commercial";
+=======
+import type { WeddingQuote } from "../types/commercial";
+>>>>>>> cacf636fd431a81300b8c8cf578905e909769d03
 import { Plus, Sparkles, FileText, Send, MoreHorizontal } from "lucide-react";
 
 function money(n: number) {
