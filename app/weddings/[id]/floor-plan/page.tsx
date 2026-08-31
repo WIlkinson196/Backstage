@@ -1,24 +1,8 @@
-export default function Page() {
-  return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
-      <section className="backstage-panel rounded-3xl p-7">
-        <div className="backstage-kicker">Room design</div>
-        <h2 className="backstage-display mt-2 text-4xl">Floor Plan</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-black/45">Visual room layout connected to tables, spaces and event requirements.</p>
-        <div className="mt-7 rounded-3xl border border-dashed border-backstage-line bg-backstage-cream p-8">
-          <div className="text-sm font-semibold">Dedicated Backstage module boundary created.</div>
-          <p className="mt-2 text-sm leading-6 text-black/40">
-            This area is intentionally isolated so we can now build the full workflow without affecting the rest of the wedding workspace.
-          </p>
-        </div>
-      </section>
-      <aside className="rounded-3xl bg-backstage-ink p-6 text-white">
-        <div className="text-[10px] font-bold uppercase tracking-[.14em] text-backstage-gold">Backstage Intelligence</div>
-        <div className="mt-3 backstage-display text-3xl">AI will read the same wedding record.</div>
-        <p className="mt-3 text-sm leading-6 text-white/50">
-          No duplicate data entry: this module will consume the shared planning, pricing, guest and operational data.
-        </p>
-      </aside>
-    </div>
-  );
+import { getWeddingFloorPlanZones, getWeddingTables } from "@/features/weddings/services/guest-repository";
+import { FloorPlanCanvas } from "@/features/weddings/components/floor-plan-canvas";
+
+export default async function FloorPlanPage({ params }: { params: Promise<{ id:string }> }) {
+  const { id } = await params;
+  const [tables, zones] = await Promise.all([getWeddingTables(id), getWeddingFloorPlanZones(id)]);
+  return <div className="space-y-4"><div className="text-[10px] font-bold uppercase tracking-[.12em] text-backstage-gold">Backstage v0.9.1 · Floor Plan Workspace</div><FloorPlanCanvas tables={tables} zones={zones}/></div>;
 }

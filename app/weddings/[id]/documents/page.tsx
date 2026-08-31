@@ -1,24 +1,23 @@
-export default function Page() {
+import { getWeddingDocuments, getWeddingReadiness } from "@/features/weddings/services/operations-repository";
+import { DocumentCentre } from "@/features/weddings/components/document-centre";
+import { ReadinessGate } from "@/features/weddings/components/readiness-gate";
+
+export default async function DocumentsPage({ params }: { params: Promise<{ id:string }> }) {
+  const { id } = await params;
+  const [documents, checks] = await Promise.all([getWeddingDocuments(id), getWeddingReadiness(id)]);
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
-      <section className="backstage-panel rounded-3xl p-7">
-        <div className="backstage-kicker">Document centre</div>
-        <h2 className="backstage-display mt-2 text-4xl">Documents</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-black/45">Customer packs, internal documents, history, versioning and final operational documents.</p>
-        <div className="mt-7 rounded-3xl border border-dashed border-backstage-line bg-backstage-cream p-8">
-          <div className="text-sm font-semibold">Dedicated Backstage module boundary created.</div>
-          <p className="mt-2 text-sm leading-6 text-black/40">
-            This area is intentionally isolated so we can now build the full workflow without affecting the rest of the wedding workspace.
+    <div className="space-y-6">
+      <div className="grid gap-6 xl:grid-cols-[1fr_390px]">
+        <section className="backstage-panel rounded-3xl p-7">
+          <div className="backstage-kicker">Document centre</div>
+          <h2 className="backstage-display mt-2 text-4xl">Generate once. Know when it&apos;s stale.</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-black/45">
+            Customer and operational documents are generated from the live wedding record, versioned, and checked against later planning changes.
           </p>
-        </div>
-      </section>
-      <aside className="rounded-3xl bg-backstage-ink p-6 text-white">
-        <div className="text-[10px] font-bold uppercase tracking-[.14em] text-backstage-gold">Backstage Intelligence</div>
-        <div className="mt-3 backstage-display text-3xl">AI will read the same wedding record.</div>
-        <p className="mt-3 text-sm leading-6 text-white/50">
-          No duplicate data entry: this module will consume the shared planning, pricing, guest and operational data.
-        </p>
-      </aside>
+        </section>
+        <ReadinessGate checks={checks}/>
+      </div>
+      <DocumentCentre documents={documents}/>
     </div>
   );
 }
