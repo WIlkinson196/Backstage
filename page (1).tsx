@@ -1,9 +1,21 @@
-import { getGuestReadiness, getWeddingDietarySummary, getWeddingGuests } from "@/features/weddings/services/guest-repository";
+import { getGuestReadiness, getWeddingGuests, getWeddingTables } from "@/features/weddings/services/guest-repository";
 import { GuestReadinessCards } from "@/features/weddings/components/guest-readiness-cards";
-import { GuestTable } from "@/features/weddings/components/guest-table";
-import { DietaryMatrix } from "@/features/weddings/components/dietary-matrix";
+import { SeatingBoard } from "@/features/weddings/components/seating-board";
+import { PortalHandoffCard } from "@/features/weddings/components/portal-handoff-card";
 
-export default async function Page(){
-  const [guests,readiness,summary]=await Promise.all([getWeddingGuests("wed-002"),getGuestReadiness("wed-002"),getWeddingDietarySummary("wed-002")]);
-  return <div className="mx-auto max-w-[1280px] space-y-6 px-5 py-10 pb-24"><div><div className="text-[10px] font-bold uppercase tracking-[.14em] text-[#A37E4B]">Your wedding</div><h1 className="mt-2 font-serif text-4xl">Guests</h1><p className="mt-2 text-sm text-black/45">Keep names, attendance, meal choices and dietary information up to date.</p></div><GuestReadinessCards readiness={readiness}/><GuestTable guests={guests}/><DietaryMatrix guests={guests} summary={summary}/></div>
+export default async function SeatingPage({ params }: { params: Promise<{ id:string }> }) {
+  const { id } = await params;
+  const [guests, tables, readiness] = await Promise.all([
+    getWeddingGuests(id),
+    getWeddingTables(id),
+    getGuestReadiness(id)
+  ]);
+
+  return (
+    <div className="space-y-6"><div className="text-[10px] font-bold uppercase tracking-[.12em] text-backstage-gold">Backstage v0.9.1 · Guest & Seating Workspace</div>
+      <GuestReadinessCards readiness={readiness}/>
+      <SeatingBoard tables={tables} guests={guests} weddingId={id}/>
+      <PortalHandoffCard/>
+    </div>
+  );
 }
