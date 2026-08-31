@@ -1,5 +1,6 @@
+import Link from "next/link";
 import type { WeddingRecord } from "../types/wedding";
-import { CalendarDays, Users, PoundSterling, Sparkles } from "lucide-react";
+import { CalendarDays, Users, PoundSterling, Sparkles, ExternalLink } from "lucide-react";
 import { ReadinessRing } from "./readiness-ring";
 
 export function WeddingHero({ wedding }: { wedding: WeddingRecord }) {
@@ -9,8 +10,13 @@ export function WeddingHero({ wedding }: { wedding: WeddingRecord }) {
       <div className="relative grid min-h-[390px] gap-8 p-7 md:p-9 xl:grid-cols-[1fr_330px]">
         <div className="flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.2em] text-[#E2C69D]">
-              <Sparkles size={14}/> Wedding workspace
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.2em] text-[#E2C69D]">
+                <Sparkles size={14}/> Wedding workspace
+              </div>
+              <Link href="/portal" className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white backdrop-blur transition hover:bg-white/15">
+                Open Couple Portal <ExternalLink size={14}/>
+              </Link>
             </div>
             <h1 className="backstage-display mt-4 text-5xl leading-none md:text-6xl">{wedding.couple}</h1>
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-white/60">
