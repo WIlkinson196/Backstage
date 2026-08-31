@@ -1,11 +1,11 @@
 import type { GuestReadiness } from "../types/guests";
-import { Users, Armchair, ClipboardClock, TriangleAlert, Utensils } from "lucide-react";
+import { Users, Armchair, ClipboardList, TriangleAlert, Utensils } from "lucide-react";
 
 export function GuestReadinessCards({ readiness }: { readiness: GuestReadiness }) {
   const cards = [
     ["Guests", readiness.totalGuests, Users],
     ["Unassigned", readiness.unassignedGuests, Armchair],
-    ["Pending RSVPs", readiness.pendingRsvps, ClipboardClock],
+    ["Pending RSVPs", readiness.pendingRsvps, ClipboardList],
     ["Dietary guests", readiness.dietaryGuests, Utensils],
     ["Critical", readiness.criticalDietaries, TriangleAlert]
   ] as const;
