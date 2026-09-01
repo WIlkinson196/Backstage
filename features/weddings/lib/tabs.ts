@@ -8,6 +8,7 @@ export const weddingTabs = [
   ["payments", "Payments"],
   ["timeline", "Timeline"],
   ["documents", "Documents"],
+  ["outputs", "Outputs"],
   ["running-order", "Running Order"],
   ["seating", "Seating"],
   ["floor-plan", "Floor Plan"],
