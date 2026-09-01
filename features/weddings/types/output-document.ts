@@ -12,6 +12,6 @@ export type FunctionSheetDocument = {
 export type MasterOperationalPack = {
   key:"master-pack"; title:string; version:number; status:OutputDocumentStatus; generatedAt:string;
   functionSheet:FunctionSheetDocument;
-  checks:{label:string;detail:string;status:string}[];
+  checks:{id:string;label:string;detail:string;status:string}[];
   issueWarnings:string[];
 };
