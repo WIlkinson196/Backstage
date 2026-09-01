@@ -5,6 +5,10 @@ export function isSupabaseConfigured() {
   return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }
 
+export function isBuildMode() {
+  return process.env.NEXT_PUBLIC_BACKSTAGE_BUILD_MODE !== "false";
+}
+
 export async function getServerSupabase() {
   if (!isSupabaseConfigured()) return null;
 
@@ -28,4 +32,3 @@ export async function getServerSupabase() {
     }
   );
 }
-

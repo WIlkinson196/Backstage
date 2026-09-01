@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { getServerSupabase, isSupabaseConfigured } from "@/lib/supabase/server";
+import { getServerSupabase, isBuildMode, isSupabaseConfigured } from "@/lib/supabase/server";
 import type { VenueContext } from "../types/context";
 
 const DEMO_CONTEXT: VenueContext = {
@@ -14,7 +14,7 @@ const DEMO_CONTEXT: VenueContext = {
 };
 
 export async function getCurrentVenueContext(): Promise<VenueContext | null> {
-  if (!isSupabaseConfigured()) return DEMO_CONTEXT;
+  if (isBuildMode() || !isSupabaseConfigured()) return DEMO_CONTEXT;
   const supabase = await getServerSupabase();
   if (!supabase) return null;
 
@@ -69,4 +69,3 @@ export async function getCurrentVenueContext(): Promise<VenueContext | null> {
     demoMode: false
   };
 }
-

@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const PUBLIC_PREFIXES = ["/login", "/auth"];
 
 export async function refreshSession(request: NextRequest) {
+  if (process.env.NEXT_PUBLIC_BACKSTAGE_BUILD_MODE !== "false") return NextResponse.next({ request });
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return NextResponse.next({ request });
@@ -37,4 +38,3 @@ export async function refreshSession(request: NextRequest) {
 
   return response;
 }
-
