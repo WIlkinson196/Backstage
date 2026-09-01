@@ -65,3 +65,9 @@ body {
 }
 
 button, a { -webkit-tap-highlight-color: transparent; }
+
+@media print {
+  .print-hide { display: none !important; }
+  @page { size: A4 portrait; margin: 0; }
+  html, body { background: #fff !important; }
+}
