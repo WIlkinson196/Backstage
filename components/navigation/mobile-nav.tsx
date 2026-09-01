@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Inbox, CalendarDays, Building2, MoreHorizontal } from "lucide-react";
+import { LayoutDashboard, Inbox, CalendarDays, BriefcaseBusiness, MoreHorizontal } from "lucide-react";
 
 const items = [
   ["/dashboard", "Home", LayoutDashboard],
   ["/enquiries", "Enquiries", Inbox],
+  ["/events", "Events", BriefcaseBusiness],
   ["/calendar", "Calendar", CalendarDays],
-  ["/my-venue", "Venue", Building2],
   ["/settings", "More", MoreHorizontal]
 ] as const;
 

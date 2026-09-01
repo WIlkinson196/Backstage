@@ -1,32 +1,20 @@
 import type { VenuePolicy, VenueProduct, VenueProfileForm, VenueSpace } from "../types/config";
+import { getCurrentVenueContext } from "@/features/platform/services/context";
+import { getServerSupabase } from "@/lib/supabase/server";
 
-const DEMO_VENUE_ID = "22222222-2222-2222-2222-222222222222";
-
-function config() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
-  return { url, key };
-}
-
-async function rest<T>(path: string): Promise<T | null> {
-  const c = config();
-  if (!c) return null;
-  const res = await fetch(`${c.url}/rest/v1/${path}`, {
-    headers: {
-      apikey: c.key,
-      Authorization: `Bearer ${c.key}`
-    },
-    next: { revalidate: 30 }
-  });
-  if (!res.ok) return null;
-  return res.json() as Promise<T>;
+async function liveContext() {
+  const context = await getCurrentVenueContext();
+  if (!context || context.demoMode) return null;
+  const supabase = await getServerSupabase();
+  if (!supabase) return null;
+  return { context, supabase };
 }
 
 export async function getSupabaseVenueProfile(): Promise<VenueProfileForm | null> {
-  const rows = await rest<any[]>(`venues?id=eq.${DEMO_VENUE_ID}&select=*`);
-  const row = rows?.[0];
-  if (!row) return null;
+  const live = await liveContext();
+  if (!live) return null;
+  const { data: row, error } = await live.supabase.from("venues").select("*").eq("id", live.context.venueId).maybeSingle();
+  if (error || !row) return null;
   return {
     name: row.name ?? "",
     tradingName: row.trading_name ?? "",
@@ -40,9 +28,11 @@ export async function getSupabaseVenueProfile(): Promise<VenueProfileForm | null
 }
 
 export async function getSupabaseVenueSpaces(): Promise<VenueSpace[] | null> {
-  const rows = await rest<any[]>(`venue_spaces?venue_id=eq.${DEMO_VENUE_ID}&select=*&order=name`);
-  if (!rows) return null;
-  return rows.map(row => ({
+  const live = await liveContext();
+  if (!live) return null;
+  const { data: rows, error } = await live.supabase.from("venue_spaces").select("*").eq("venue_id", live.context.venueId).order("name");
+  if (error || !rows) return null;
+  return rows.map((row) => ({
     id: row.id,
     name: row.name,
     description: row.description ?? "",
@@ -53,9 +43,11 @@ export async function getSupabaseVenueSpaces(): Promise<VenueSpace[] | null> {
 }
 
 export async function getSupabaseVenueProducts(): Promise<VenueProduct[] | null> {
-  const rows = await rest<any[]>(`venue_products?venue_id=eq.${DEMO_VENUE_ID}&select=*&order=name`);
-  if (!rows) return null;
-  return rows.map(row => ({
+  const live = await liveContext();
+  if (!live) return null;
+  const { data: rows, error } = await live.supabase.from("venue_products").select("*").eq("venue_id", live.context.venueId).order("name");
+  if (error || !rows) return null;
+  return rows.map((row) => ({
     id: row.id,
     category: row.category,
     name: row.name,
@@ -68,9 +60,11 @@ export async function getSupabaseVenueProducts(): Promise<VenueProduct[] | null>
 }
 
 export async function getSupabaseVenuePolicies(): Promise<VenuePolicy[] | null> {
-  const rows = await rest<any[]>(`venue_policies?venue_id=eq.${DEMO_VENUE_ID}&select=*&order=title`);
-  if (!rows) return null;
-  return rows.map(row => ({
+  const live = await liveContext();
+  if (!live) return null;
+  const { data: rows, error } = await live.supabase.from("venue_policies").select("*").eq("venue_id", live.context.venueId).order("title");
+  if (error || !rows) return null;
+  return rows.map((row) => ({
     id: row.id,
     policyKey: row.policy_key,
     title: row.title,
@@ -78,3 +72,4 @@ export async function getSupabaseVenuePolicies(): Promise<VenuePolicy[] | null> 
     metadata: row.metadata ?? {}
   }));
 }
+

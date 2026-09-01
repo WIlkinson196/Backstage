@@ -90,7 +90,7 @@ export default async function EnquiryPage({ params }: { params: Promise<{ id: st
             <section className="backstage-panel rounded-[28px] p-5">
               <div className="backstage-kicker">Sales activity</div>
               <h3 className="backstage-display mt-2 text-2xl">Progress enquiry</h3>
-              <div className="mt-5"><ActionCentre/></div>
+              <div className="mt-5"><ActionCentre enquiryId={enquiry.id} currentStage={enquiry.stage} nextAction={enquiry.nextAction} nextActionDate={enquiry.nextActionDate}/></div>
             </section>
 
             <section className="rounded-[28px] bg-backstage-ink p-5 text-white">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AppShell } from "@/components/navigation/app-shell";
 import { getEnquiries } from "@/features/enquiries/services/repository";
 import { PipelineBoard } from "@/features/enquiries/components/pipeline-board";
@@ -42,7 +43,7 @@ export default async function EnquiriesPage() {
               </div>
               <button className="flex items-center gap-2 rounded-xl border border-backstage-line bg-white px-4 py-3 text-xs font-semibold"><SlidersHorizontal size={15}/> Filters</button>
               <button className="flex items-center gap-2 rounded-xl border border-backstage-line bg-white px-4 py-3 text-xs font-semibold"><Phone size={15}/> Start calls</button>
-              <button className="flex items-center gap-2 rounded-xl bg-backstage-ink px-4 py-3 text-xs font-semibold text-white"><Plus size={15}/> New enquiry</button>
+              <Link href="/enquiries/new" className="flex items-center gap-2 rounded-xl bg-backstage-ink px-4 py-3 text-xs font-semibold text-white"><Plus size={15}/> New enquiry</Link>
             </div>
           </div>
           <div className="hidden xl:block" />
