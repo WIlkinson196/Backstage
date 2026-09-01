@@ -3,6 +3,7 @@ export const weddingTabs = [
   ["quote", "Quote"],
   ["pricing", "Pricing"],
   ["planning", "Planning"],
+  ["automation", "AI & Automation"],
   ["tasks", "Tasks"],
   ["payments", "Payments"],
   ["timeline", "Timeline"],
