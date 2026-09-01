@@ -7,7 +7,7 @@ import { LayoutDashboard, Inbox, CalendarDays, BriefcaseBusiness, MoreHorizontal
 const items = [
   ["/dashboard", "Home", LayoutDashboard],
   ["/enquiries", "Enquiries", Inbox],
-  ["/events", "Events", BriefcaseBusiness],
+  ["/events", "Functions", BriefcaseBusiness],
   ["/calendar", "Calendar", CalendarDays],
   ["/settings", "More", MoreHorizontal]
 ] as const;

@@ -1,24 +1,26 @@
-# Backstage Venue OS v0.17
+# Backstage Venue OS v0.18
 
 Backstage is the AI operating system for venues: one platform for enquiries, bookings, planning, payments, customer collaboration and live event operations.
 
 ## Current release
 
-v0.17 adds the first operational venue diary while keeping the product easy to build and review before authentication is switched on.
+v0.18 turns calendar bookings into proper operational Functions and connects them to the specialist Wedding workspace.
 
-- month, week and list calendar views
-- confirmed bookings, provisional holds and enquiry demand on one diary
-- booking creation with space, capacity, setup and clear-down validation
-- conflict prevention for overlapping bookings and venue blackout periods
-- confirm or release provisional bookings
-- hold-expiry visibility and diary-value summaries
-- browser-persistent build data with a one-click reset
-- production-ready Supabase schema, RPCs, tenancy and concurrency protection
-- v0.16's enquiry, event, membership and audit foundations remain included
+- Functions & Weddings command centre with booked value, outstanding balances, readiness and priority actions
+- a detailed Function workspace for meetings, conferences, parties, wakes, Christmas events and other bookings
+- conditional room, catering, dietary, AV, entertainment and accommodation planning
+- editable planning checklists and minute-by-minute running orders
+- payment schedules and balance tracking
+- printable operational function-sheet preview
+- a richer Wedding command centre linked to the existing guided meetings, seating, guests, outputs and live-day modules
+- calendar-to-function handover in build mode
+- production Supabase operations, tasks, running-order and payment-schedule foundation
+- staged Stripe, email, OpenAI, document and customer-portal integration status without activating them
+- v0.17's availability and provisional-booking engine remains included
 
 ## Build mode — no authentication required
 
-Build mode is on by default. You can use and test Backstage without configuring authentication, Supabase or Stripe. Calendar changes persist in the current browser so the workflow is usable while the rest of the product is built.
+Build mode is on by default. You can use and test Backstage without configuring authentication, Supabase or Stripe. Calendar, Function planning, checklist, running-order and payment-position changes persist in the current browser.
 
 Keep this setting during product development:
 
@@ -32,7 +34,7 @@ Authentication is only activated later by explicitly setting it to `false` and c
 
 1. Run `npm install`.
 2. Run `npm run dev`.
-3. Open `http://localhost:3000/calendar`.
+3. Open `http://localhost:3000/events` for the Functions command centre, `http://localhost:3000/weddings` for Weddings, or `http://localhost:3000/calendar` for the diary.
 
 No authentication or database setup is needed for this stage.
 
@@ -41,7 +43,7 @@ No authentication or database setup is needed for this stage.
 When the product is ready for real users:
 
 1. Add the Supabase environment values.
-2. Apply migrations `001` through `020` in order.
+2. Apply migrations `001` through `021` in order.
 3. Create the first organisation, venue and staff membership.
 4. Set `NEXT_PUBLIC_BACKSTAGE_BUILD_MODE=false`.
 5. Restart the app and test each role before launch.
@@ -54,4 +56,4 @@ When the product is ready for real users:
 - Customer-facing automation can require approval.
 - Weddings, meetings, conferences, private events and Christmas events will share the same event core.
 
-See `docs/V017_CALENDAR_AVAILABILITY.md` for the complete v0.17 behavior, build-mode guidance and later production checklist.
+See `docs/V018_FUNCTIONS_WEDDINGS_COMMAND_CENTRE.md` for the complete v0.18 behavior and integration staging plan.

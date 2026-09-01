@@ -8,7 +8,7 @@ import type { VenueContext } from "@/features/platform/types/context";
 const items = [
   ["/dashboard", "Dashboard", LayoutDashboard],
   ["/enquiries", "Enquiries", Inbox],
-  ["/events", "Events", BriefcaseBusiness],
+  ["/events", "Functions", BriefcaseBusiness],
   ["/weddings", "Weddings", HeartHandshake],
   ["/calendar", "Calendar", CalendarDays],
   ["/my-venue", "My Venue", Building2]

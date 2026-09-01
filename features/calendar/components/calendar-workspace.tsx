@@ -2,13 +2,17 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { CalendarDays, ChevronLeft, ChevronRight, Clock3, Filter, LockKeyhole, Plus, Search, ShieldCheck, Users, X, CheckCircle2, RotateCcw, PoundSterling, AlertTriangle } from "lucide-react";
 import { confirmCalendarBookingAction, createCalendarBookingAction, releaseCalendarBookingAction } from "../actions";
 import { activeOccupancy, findConflicts, isoDate, minutes, parseDate } from "../lib/conflicts";
 import type { CalendarBooking, CalendarBookingInput, CalendarStatus, CalendarWorkspaceData } from "../types/calendar";
+import { demoEvents } from "@/features/events/data/demo";
+import type { EventPlanKind, EventRecord } from "@/features/events/types/event";
 
 type View = "month" | "week" | "list";
 const STORAGE_KEY = "backstage-calendar-v017";
+const FUNCTIONS_STORAGE_KEY = "backstage-functions-v018";
 const statusLabels: Record<CalendarStatus, string> = { enquiry: "Enquiry demand", provisional: "Provisional", confirmed: "Confirmed", released: "Released", cancelled: "Cancelled", blocked: "Blocked" };
 const statusClasses: Record<CalendarStatus, string> = {
   enquiry: "border-amber-300 bg-amber-50 text-amber-800",
@@ -53,6 +57,15 @@ function emptyDraft(data: CalendarWorkspaceData, date: string) {
     quotedValue: 0, setupMinutes: data.defaultSetupMinutes, clearMinutes: data.defaultClearMinutes,
     holdDays: data.defaultHoldDays, notes: ""
   };
+}
+
+function eventKind(eventType: string): EventPlanKind {
+  const value = eventType.toLowerCase();
+  if (value.includes("wedding")) return "wedding";
+  if (value.includes("meeting") || value.includes("conference")) return "meeting";
+  if (value.includes("wake")) return "wake";
+  if (value.includes("party") || value.includes("celebration") || value.includes("christmas")) return "party";
+  return "event";
 }
 
 export function CalendarWorkspace({ data }: { data: CalendarWorkspaceData }) {
@@ -138,13 +151,30 @@ export function CalendarWorkspace({ data }: { data: CalendarWorkspaceData }) {
     }
 
     const holdExpiresAt = candidate.status === "provisional" ? new Date(Date.now() + candidate.holdDays * 86400000).toISOString() : undefined;
+    const resolvedEventId = eventId || crypto.randomUUID();
     setBookings((current) => [...current, {
       ...candidate,
       id: allocationId || crypto.randomUUID(),
-      eventId: eventId || crypto.randomUUID(),
+      eventId: resolvedEventId,
       spaceName: selectedSpace?.name || "Space",
       holdExpiresAt
     }]);
+    if (data.demoMode) {
+      let functions = demoEvents;
+      try { functions = JSON.parse(window.localStorage.getItem(FUNCTIONS_STORAGE_KEY) || JSON.stringify(demoEvents)); } catch { /* use supplied functions */ }
+      const functionRecord: EventRecord = {
+        id: resolvedEventId, title: candidate.title, clientName: candidate.clientName, eventType: candidate.eventType,
+        eventDate: candidate.date, startTime: candidate.startTime, endTime: candidate.endTime, guestCount: candidate.guestCount,
+        status: candidate.status === "confirmed" ? "confirmed" : "provisional", quotedValue: candidate.quotedValue, paidValue: 0, owner: "Unassigned", room: selectedSpace?.name,
+        createdAt: new Date().toISOString(), readinessScore: 20, nextAction: "Complete the operational plan",
+        functionSheetStatus: "not_started", foodOrderStatus: "not_started",
+        plan: { kind: eventKind(candidate.eventType), contact: { organiser: candidate.clientName }, room: { space: selectedSpace?.name }, food: {}, av: {}, entertainment: {}, accommodation: {}, customerRequirements: candidate.notes },
+        tasks: [{ id: crypto.randomUUID(), title: "Complete the operational plan", category: "Planning", priority: "High", assignedTo: "Unassigned", completed: false }],
+        runningOrder: [], payments: candidate.quotedValue ? [{ id: crypto.randomUUID(), label: "Booking value", amount: candidate.quotedValue, status: "scheduled" }] : [],
+        integrations: demoEvents[0].integrations
+      };
+      window.localStorage.setItem(FUNCTIONS_STORAGE_KEY, JSON.stringify([...functions.filter((item) => item.id !== resolvedEventId), functionRecord]));
+    }
     setBusy(false);
     setSelectedDate(candidate.date);
     setShowForm(false);
@@ -158,6 +188,12 @@ export function CalendarWorkspace({ data }: { data: CalendarWorkspaceData }) {
       if (!result.ok) { setBusy(false); setError(result.error || "The booking could not be updated."); return; }
     }
     setBookings((current) => current.map((item) => item.id === booking.id ? { ...item, status, holdExpiresAt: undefined } : item));
+    if (data.demoMode && booking.eventId) {
+      try {
+        const functions = JSON.parse(window.localStorage.getItem(FUNCTIONS_STORAGE_KEY) || JSON.stringify(demoEvents)) as EventRecord[];
+        window.localStorage.setItem(FUNCTIONS_STORAGE_KEY, JSON.stringify(functions.map((item) => item.id === booking.eventId ? { ...item, status: status === "confirmed" ? "confirmed" : "cancelled" } : item)));
+      } catch { /* calendar status remains updated */ }
+    }
     setBusy(false);
     router.refresh();
   }
@@ -206,7 +242,7 @@ export function CalendarWorkspace({ data }: { data: CalendarWorkspaceData }) {
         {view === "list" && <div className="p-4">{listGroups.map((date) => <div key={date} className="border-b border-backstage-line py-4 last:border-0"><div className="mb-3 text-xs font-bold text-black/45">{formatDate(date, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</div><div className="space-y-2">{visible.filter((booking) => booking.date === date).map((booking) => <button key={booking.id} onClick={() => setSelectedDate(date)} className="grid w-full grid-cols-[70px_1fr_auto] items-center gap-4 rounded-2xl border border-backstage-line bg-white p-4 text-left"><div className="text-sm font-semibold">{booking.advisory ? "Demand" : booking.startTime}</div><div><div className="text-sm font-semibold">{booking.clientName}</div><div className="mt-1 text-xs text-black/35">{booking.eventType} · {booking.spaceName} · {booking.guestCount} guests</div></div><span className={`rounded-full border px-3 py-1 text-[10px] font-semibold ${statusClasses[booking.status]}`}>{statusLabels[booking.status]}</span></button>)}</div></div>)}{!listGroups.length && <div className="py-16 text-center text-sm text-black/30">No bookings match the current filters.</div>}</div>}
       </section>
 
-      <section className="backstage-panel rounded-[28px] p-5 md:p-6"><div className="flex flex-wrap items-start justify-between gap-4"><div><div className="backstage-kicker">Selected date</div><h2 className="backstage-display mt-2 text-3xl">{formatDate(selectedDate, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</h2></div><button onClick={() => openNew(selectedDate)} className="flex items-center gap-2 rounded-xl bg-backstage-ink px-4 py-3 text-xs font-semibold text-white"><Plus size={15}/>Add booking</button></div><div className="mt-6 grid gap-3 lg:grid-cols-2">{selectedBookings.map((booking) => <article key={booking.id} className="rounded-2xl border border-backstage-line bg-white p-4"><div className="flex items-start justify-between gap-3"><div><div className="text-[10px] font-bold uppercase tracking-[.12em] text-backstage-gold">{booking.eventType}</div><h3 className="mt-1 text-base font-semibold">{booking.clientName}</h3><div className="mt-2 text-xs text-black/40">{booking.advisory ? "Preferred date—not blocking availability" : `${booking.startTime}–${booking.endTime} · ${booking.spaceName}`}</div></div><span className={`rounded-full border px-3 py-1 text-[10px] font-semibold ${statusClasses[booking.status]}`}>{expiryLabel(booking) || statusLabels[booking.status]}</span></div><div className="mt-4 flex items-center gap-4 text-xs text-black/40"><span className="flex items-center gap-1"><Users size={13}/>{booking.guestCount}</span><span className="flex items-center gap-1"><PoundSterling size={13}/>{booking.quotedValue.toLocaleString("en-GB")}</span></div>{booking.status === "provisional" && <div className="mt-4 flex gap-2"><button disabled={busy} onClick={() => changeStatus(booking, "confirmed")} className="flex items-center gap-2 rounded-xl bg-[#E7F1E9] px-3 py-2 text-xs font-semibold text-[#3F6848]"><CheckCircle2 size={14}/>Confirm</button><button disabled={busy} onClick={() => changeStatus(booking, "released")} className="rounded-xl bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500">Release hold</button></div>}</article>)}{!selectedBookings.length && <div className="col-span-full rounded-2xl border border-dashed border-backstage-line py-10 text-center text-sm text-black/30">No bookings or enquiry demand on this date.</div>}</div></section>
+      <section className="backstage-panel rounded-[28px] p-5 md:p-6"><div className="flex flex-wrap items-start justify-between gap-4"><div><div className="backstage-kicker">Selected date</div><h2 className="backstage-display mt-2 text-3xl">{formatDate(selectedDate, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</h2></div><button onClick={() => openNew(selectedDate)} className="flex items-center gap-2 rounded-xl bg-backstage-ink px-4 py-3 text-xs font-semibold text-white"><Plus size={15}/>Add booking</button></div><div className="mt-6 grid gap-3 lg:grid-cols-2">{selectedBookings.map((booking) => <article key={booking.id} className="rounded-2xl border border-backstage-line bg-white p-4"><div className="flex items-start justify-between gap-3"><div><div className="text-[10px] font-bold uppercase tracking-[.12em] text-backstage-gold">{booking.eventType}</div><h3 className="mt-1 text-base font-semibold">{booking.clientName}</h3><div className="mt-2 text-xs text-black/40">{booking.advisory ? "Preferred date—not blocking availability" : `${booking.startTime}–${booking.endTime} · ${booking.spaceName}`}</div></div><span className={`rounded-full border px-3 py-1 text-[10px] font-semibold ${statusClasses[booking.status]}`}>{expiryLabel(booking) || statusLabels[booking.status]}</span></div><div className="mt-4 flex items-center gap-4 text-xs text-black/40"><span className="flex items-center gap-1"><Users size={13}/>{booking.guestCount}</span><span className="flex items-center gap-1"><PoundSterling size={13}/>{booking.quotedValue.toLocaleString("en-GB")}</span></div><div className="mt-4 flex flex-wrap gap-2">{booking.eventId && !booking.advisory && <Link href={`/events/${booking.eventId}`} className="rounded-xl bg-backstage-ink px-3 py-2 text-xs font-semibold text-white">Open function</Link>}{booking.status === "provisional" && <><button disabled={busy} onClick={() => changeStatus(booking, "confirmed")} className="flex items-center gap-2 rounded-xl bg-[#E7F1E9] px-3 py-2 text-xs font-semibold text-[#3F6848]"><CheckCircle2 size={14}/>Confirm</button><button disabled={busy} onClick={() => changeStatus(booking, "released")} className="rounded-xl bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500">Release hold</button></>}</div></article>)}{!selectedBookings.length && <div className="col-span-full rounded-2xl border border-dashed border-backstage-line py-10 text-center text-sm text-black/30">No bookings or enquiry demand on this date.</div>}</div></section>
 
       {showForm && <div className="fixed inset-0 z-[80] flex items-end justify-end bg-black/35 backdrop-blur-sm md:p-4"><div className="h-full w-full overflow-y-auto bg-[#FFFCF8] p-5 shadow-2xl md:max-w-xl md:rounded-[28px] md:p-7"><div className="flex items-start justify-between"><div><div className="backstage-kicker">Availability protected</div><h2 className="backstage-display mt-2 text-4xl">New booking</h2></div><button onClick={() => setShowForm(false)} className="rounded-xl border border-backstage-line bg-white p-2"><X size={18}/></button></div><form onSubmit={createBooking} className="mt-7 space-y-5"><div className="grid gap-4 sm:grid-cols-2"><Field label="Customer / event name"><input required value={draft.clientName} onChange={(event) => setDraft({ ...draft, clientName: event.target.value })}/></Field><Field label="Event type"><select value={draft.eventType} onChange={(event) => setDraft({ ...draft, eventType: event.target.value })}><option>Wedding</option><option>Meeting</option><option>Conference</option><option>Private Event</option><option>Christmas</option><option>Celebration</option></select></Field><Field label="Date"><input type="date" required value={draft.date} onChange={(event) => setDraft({ ...draft, date: event.target.value })}/></Field><Field label="Space"><select required value={draft.spaceId} onChange={(event) => setDraft({ ...draft, spaceId: event.target.value })}>{data.spaces.map((space) => <option key={space.id} value={space.id}>{space.name} · max {space.capacity}</option>)}</select></Field><Field label="Start time"><input type="time" required value={draft.startTime} onChange={(event) => setDraft({ ...draft, startTime: event.target.value })}/></Field><Field label="Finish time"><input type="time" required value={draft.endTime} onChange={(event) => setDraft({ ...draft, endTime: event.target.value })}/></Field><Field label="Guests"><input type="number" min="0" value={draft.guestCount} onChange={(event) => setDraft({ ...draft, guestCount: Number(event.target.value) })}/></Field><Field label="Estimated value (£)"><input type="number" min="0" step="0.01" value={draft.quotedValue} onChange={(event) => setDraft({ ...draft, quotedValue: Number(event.target.value) })}/></Field><Field label="Setup buffer (minutes)"><input type="number" min="0" value={draft.setupMinutes} onChange={(event) => setDraft({ ...draft, setupMinutes: Number(event.target.value) })}/></Field><Field label="Clear-down buffer (minutes)"><input type="number" min="0" value={draft.clearMinutes} onChange={(event) => setDraft({ ...draft, clearMinutes: Number(event.target.value) })}/></Field><Field label="Booking status"><select value={draft.status} onChange={(event) => setDraft({ ...draft, status: event.target.value as "provisional" | "confirmed" })}><option value="provisional">Provisional hold</option><option value="confirmed">Confirmed booking</option></select></Field>{draft.status === "provisional" && <Field label="Hold for days"><input type="number" min="1" max="90" value={draft.holdDays} onChange={(event) => setDraft({ ...draft, holdDays: Number(event.target.value) })}/></Field>}</div><Field label="Notes"><textarea rows={4} value={draft.notes} onChange={(event) => setDraft({ ...draft, notes: event.target.value })}/></Field>{draftConflicts.length > 0 && <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"><div className="flex items-center gap-2 font-semibold"><AlertTriangle size={16}/>Conflict detected</div><div className="mt-2 text-xs leading-5">{draftConflicts.map((booking) => `${booking.title} (${booking.startTime}–${booking.endTime})`).join(", ")}</div></div>}{capacityExceeded && <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">Guest numbers exceed the listed capacity for {selectedSpace?.name}.</div>}{!draftConflicts.length && !capacityExceeded && <div className="flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-700"><ShieldCheck size={16}/>No space or time conflict found.</div>}{error && <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>}<button disabled={busy || draftConflicts.length > 0 || capacityExceeded} className="flex w-full items-center justify-center gap-2 rounded-xl bg-backstage-ink px-5 py-3.5 text-sm font-semibold text-white disabled:opacity-40">{busy ? "Saving…" : draft.status === "provisional" ? "Create provisional hold" : "Create confirmed booking"}</button></form></div></div>}
     </div>
@@ -216,4 +252,3 @@ export function CalendarWorkspace({ data }: { data: CalendarWorkspaceData }) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return <label className="block text-[10px] font-bold uppercase tracking-[.1em] text-black/40">{label}<div className="mt-2 [&_input]:w-full [&_input]:rounded-xl [&_input]:border [&_input]:border-backstage-line [&_input]:bg-white [&_input]:px-3 [&_input]:py-3 [&_input]:text-sm [&_input]:font-normal [&_input]:normal-case [&_input]:tracking-normal [&_input]:text-black [&_select]:w-full [&_select]:rounded-xl [&_select]:border [&_select]:border-backstage-line [&_select]:bg-white [&_select]:px-3 [&_select]:py-3 [&_select]:text-sm [&_select]:font-normal [&_select]:normal-case [&_select]:tracking-normal [&_select]:text-black [&_textarea]:w-full [&_textarea]:rounded-xl [&_textarea]:border [&_textarea]:border-backstage-line [&_textarea]:bg-white [&_textarea]:px-3 [&_textarea]:py-3 [&_textarea]:text-sm [&_textarea]:font-normal [&_textarea]:normal-case [&_textarea]:tracking-normal [&_textarea]:text-black">{children}</div></label>;
 }
-
