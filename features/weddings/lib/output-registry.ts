@@ -1,6 +1,7 @@
 import type { OperationalAudience } from "@/features/weddings/types/operational-model";
 export type WeddingOutputDefinition={key:string;name:string;audience:OperationalAudience;purpose:string;requiredDomains:string[];status:"foundation"|"next"|"later";};
 export const weddingOutputRegistry:WeddingOutputDefinition[]=[
+ {key:"wedding-prep",name:"Wedding Prep List",audience:"management",purpose:"Calculated venue-wide equipment, room, bar, restaurant and ceremony preparation.",requiredDomains:["guests","meal-service","drinks","tables","decor","ceremony"],status:"next"},
  {key:"function-sheet",name:"Function Sheet",audience:"management",purpose:"Master operational truth for the venue team.",requiredDomains:["profile","guests","timings","food","drinks","setup","suppliers"],status:"next"},
  {key:"master-pack",name:"Master Operational Pack",audience:"management",purpose:"Controlled combined wedding execution pack.",requiredDomains:["function-sheet","running-order","dietaries","setup"],status:"next"},
  {key:"kitchen-prep",name:"Kitchen Prep Sheet",audience:"kitchen",purpose:"Actual covers, menu allocations, dietaries, quantities and prep requirements.",requiredDomains:["guests","food","dietaries","timings"],status:"later"},

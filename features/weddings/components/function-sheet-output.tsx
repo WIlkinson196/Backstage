@@ -13,7 +13,7 @@ export function FunctionSheetOutput({sheet,pack}:{sheet:FunctionSheetDocument;pa
           <p className="mt-4 max-w-3xl text-sm leading-7 text-white/55">Generated from the Wedding Operational Model. The document itself does not recalculate guest numbers, timings or commercial values.</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link href={`./outputs/function-sheet/print`} className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold ${blocked?"pointer-events-none bg-white/10 text-white/35":"bg-white text-backstage-ink"}`}>Open Function Sheet <ArrowRight size={15}/></Link>
-            <Link href={`./outputs/master-pack/print`} className={`inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm font-semibold ${blocked?"pointer-events-none text-white/30":"text-white"}`}>Open Master Pack <ArrowRight size={15}/></Link>
+            <Link href={`./outputs/master-pack/print`} className={`inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm font-semibold ${blocked?"pointer-events-none text-white/30":"text-white"}`}>Open Master Pack <ArrowRight size={15}/></Link><Link href={`./outputs/prep`} className="inline-flex items-center gap-2 rounded-full border border-[#D5B16E]/40 bg-[#D5B16E]/10 px-4 py-2.5 text-sm font-semibold text-[#E3C98E]">Generate Prep List <ArrowRight size={15}/></Link>
           </div>
         </div>
         <div className="border-t border-white/10 bg-white/[.035] p-7 lg:p-9 xl:border-l xl:border-t-0">

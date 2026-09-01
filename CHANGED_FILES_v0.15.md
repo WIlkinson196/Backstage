@@ -1,0 +1,12 @@
+# Backstage v0.15 - Wedding Prep & Equipment Engine
+- Generate Wedding Prep List workspace
+- Printable A4 Prep List
+- Cutlery/crockery calculations
+- Welcome + toast champagne/prosecco flute calculations
+- Chairs, tables, table numbers and centrepieces
+- Decor and ceremony prep
+- Evening-food service equipment
+- Kitchen dietary/accessibility controls
+- Housekeeping and Reception handover checks
+- Venue prep-rule schema + versioned prep snapshots
+- Migration 018
